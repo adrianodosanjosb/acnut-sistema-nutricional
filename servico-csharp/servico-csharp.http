@@ -1,0 +1,6 @@
+@servico_csharp_HostAddress = http://localhost:5290
+
+GET {{servico_csharp_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

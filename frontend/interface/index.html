@@ -1,0 +1,5715 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acnut - Sistema de Nutrição</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  /* ========================================================= ACNUT - SIDEBAR / MOBILE========================================================= */
+
+.acnut-menu-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 12px;
+    border-radius: 12px;
+
+    color: #cbd5e1;
+    font-size: 13px;
+    font-weight: 500;
+
+    text-align: left;
+
+    transition:
+        background-color .2s ease,
+        color .2s ease,
+        transform .2s ease;
+}
+
+.acnut-menu-item:hover {
+    background: rgba(255,255,255,.05);
+    color: white;
+}
+
+.acnut-menu-item:active {
+    transform: scale(.98);
+}
+
+.acnut-menu-icon {
+    width: 34px;
+    height: 34px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,.03);
+
+    font-size: 15px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 1023px) {
+
+    #main-app > main {
+        width: 100%;
+        min-width: 0;
+
+        /* espaço para a barra superior mobile */
+        padding-top: 88px !important;
+
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        padding-bottom: 30px !important;
+    }
+
+    /* Dashboard */
+    #sec-dashboard {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    /* Primeiro bloco do dashboard */
+    #sec-dashboard > header {
+        width: 100%;
+        margin-top: 0;
+    }
+
+    /* Cards do dashboard */
+    #sec-dashboard .grid {
+        width: 100%;
+    }
+
+    #sidebar-acnut {
+        width: 280px;
+    }
+}
+/* =========================================================CELULARES PEQUENOS========================================================= */
+@media (max-width: 420px) {
+    /* Conteúdo principal */
+    #main-app > main {
+        padding-top: 84px !important;
+        padding-left: 14px !important;
+        padding-right: 14px !important;
+        padding-bottom: 30px !important;
+    }
+    /* Dashboard */
+    #sec-dashboard {
+        width: 100%;
+    }
+    #sec-dashboard > header {
+        border-radius: 22px;
+    }
+    /* Sidebar mobile */
+    #sidebar-acnut {
+        width: 85vw;
+        max-width: 300px;
+    }
+}
+/* =========================================================ACNUT — LOGIN========================================================= */
+.acnut-login-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    overflow: hidden;
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(124, 58, 237, .35),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 85% 80%,
+            rgba(59, 130, 246, .28),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #08051a 0%,
+            #12082e 45%,
+            #07152f 100%
+        );
+}
+/* GLOWS */
+.acnut-login-glow {
+    position: absolute;
+    width: 450px;
+    height: 450px;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: .28;
+    pointer-events: none;
+}
+.glow-1 {
+    top: -220px;
+    left: -180px;
+    background: #8b5cf6;
+}
+.glow-2 {
+    right: -200px;
+    bottom: -220px;
+    background: #3b82f6;
+}
+/* CARD */
+.acnut-login-card {
+    position: relative;
+    z-index: 2;
+    width: min(1050px, 100%);
+    min-height: 620px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+    border-radius: 28px;
+    background: rgba(255,255,255,.97);
+    box-shadow:
+        0 40px 100px rgba(0,0,0,.45),
+        0 0 0 1px rgba(255,255,255,.1);
+    animation: acnutLoginEnter .65s ease;
+}
+/* =========================================================BRAND========================================================= */
+.acnut-login-brand {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 55px;
+    color: white;
+    overflow: hidden;
+    background:
+        radial-gradient(
+            circle at 85% 15%,
+            rgba(255,255,255,.16),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 10% 90%,
+            rgba(59,130,246,.25),
+            transparent 30%
+        ),
+        linear-gradient(
+            145deg,
+            #6d28d9,
+            #4f46e5 50%,
+            #2563eb
+        );
+}
+/* LOGO */
+.acnut-brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.acnut-logo-icon {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    color: white;
+    font-size: 23px;
+    background: rgba(255,255,255,.16);
+    border: 1px solid rgba(255,255,255,.22);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.2),
+        0 10px 30px rgba(0,0,0,.15);
+}
+.acnut-brand-name {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 3px;
+}
+.acnut-brand-subtitle {
+    margin-top: 2px;
+    font-size: 11px;
+    opacity: .75;
+    letter-spacing: .5px;
+}
+/* TEXTO */
+.acnut-brand-content {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.acnut-brand-content h1 {
+    max-width: 440px;
+    margin: 0 0 22px;
+    font-size: 47px;
+    line-height: 1.08;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+}
+.acnut-brand-content h1 span {
+    display: block;
+    color: #ddd6fe;
+}
+.acnut-brand-content p {
+    max-width: 440px;
+    margin: 0 0 35px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(255,255,255,.75);
+}
+/* FEATURES */
+.acnut-brand-features {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.acnut-brand-features div {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    font-size: 14px;
+
+    color: rgba(255,255,255,.9);
+}
+
+.acnut-brand-features i {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,.13);
+
+    font-size: 13px;
+}
+
+
+/* FOOTER */
+
+.acnut-brand-footer {
+    display: flex;
+    gap: 8px;
+
+    font-size: 10px;
+
+    letter-spacing: .5px;
+
+    color: rgba(255,255,255,.55);
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.acnut-login-form-area {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+
+    padding: 60px;
+}
+
+.acnut-login-header {
+    margin-bottom: 35px;
+}
+
+.acnut-login-header h2 {
+    margin: 0 0 8px;
+
+    color: #171329;
+
+    font-size: 31px;
+
+    font-weight: 800;
+
+    letter-spacing: -.7px;
+}
+
+.acnut-login-header p {
+    margin: 0;
+
+    color: #77738a;
+
+    font-size: 14px;
+}
+
+
+/* MOBILE LOGO */
+
+.acnut-mobile-logo {
+    display: none;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 25px;
+
+    color: #4f46e5;
+
+    font-size: 22px;
+}
+
+.acnut-mobile-logo .acnut-logo-icon {
+    width: 40px;
+    height: 40px;
+
+    color: #4f46e5;
+
+    background: #f1efff;
+
+    border: none;
+
+    box-shadow: none;
+}
+
+
+/* CAMPOS */
+
+.acnut-field {
+    margin-bottom: 20px;
+}
+
+.acnut-field label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #302d3d;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+.acnut-input-wrapper {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+}
+
+.acnut-input-wrapper > i:first-child {
+    position: absolute;
+    left: 17px;
+
+    color: #9994aa;
+
+    font-size: 14px;
+
+    pointer-events: none;
+}
+
+.acnut-input-wrapper input {
+    width: 100%;
+
+    height: 54px;
+
+    padding: 0 48px;
+
+    border: 1px solid #e5e2ec;
+
+    border-radius: 14px;
+
+    outline: none;
+
+    color: #272333;
+
+    font-size: 14px;
+
+    background: #faf9fc;
+
+    transition: .2s ease;
+}
+
+.acnut-input-wrapper input::placeholder {
+    color: #aaa6b6;
+}
+
+.acnut-input-wrapper input:focus {
+    border-color: #7c3aed;
+
+    background: white;
+
+    box-shadow:
+        0 0 0 4px rgba(124,58,237,.09);
+}
+
+.acnut-password-toggle {
+    position: absolute;
+
+    right: 8px;
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 10px;
+
+    color: #9691a5;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.acnut-password-toggle:hover {
+    color: #6d28d9;
+
+    background: #f2efff;
+}
+
+
+/* OPÇÕES */
+
+.acnut-login-options {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin: 5px 0 20px;
+
+    font-size: 12px;
+}
+
+.acnut-remember {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #77738a;
+
+    cursor: pointer;
+}
+
+.acnut-remember input {
+    width: 15px;
+    height: 15px;
+
+    accent-color: #6d28d9;
+}
+
+.acnut-login-options a {
+    color: #6d28d9;
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.acnut-login-options a:hover {
+    text-decoration: underline;
+}
+
+
+/* ERRO */
+
+.acnut-login-error {
+    display: none;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 11px 13px;
+
+    margin-bottom: 16px;
+
+    border-radius: 11px;
+
+    color: #b42318;
+
+    background: #fff1f0;
+
+    border: 1px solid #ffd8d5;
+
+    font-size: 12px;
+}
+
+
+/* BOTÃO */
+
+.acnut-login-button {
+    width: 100%;
+    height: 55px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7c3aed,
+            #4f46e5,
+            #2563eb
+        );
+
+    box-shadow:
+        0 12px 25px rgba(79,70,229,.25);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+.acnut-login-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 17px 30px rgba(79,70,229,.32);
+}
+
+.acnut-login-button:active {
+    transform: translateY(0);
+}
+
+
+/* SEGURANÇA */
+
+.acnut-login-security {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    margin-top: 25px;
+
+    color: #aaa6b6;
+
+    font-size: 11px;
+}
+
+.acnut-login-security i {
+    color: #7c3aed;
+}
+
+
+/* ANIMAÇÃO */
+
+@keyframes acnutLoginEnter {
+
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVO
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .acnut-login-screen {
+        padding: 15px;
+    }
+
+    .acnut-login-card {
+        grid-template-columns: 1fr;
+
+        min-height: auto;
+
+        max-width: 500px;
+    }
+
+    .acnut-login-brand {
+        display: none;
+    }
+
+    .acnut-login-form-area {
+        padding: 40px 30px;
+    }
+
+    .acnut-mobile-logo {
+        display: flex;
+    }
+
+}
+:root {
+    --bg-primary: #0b0f19;
+    --bg-secondary: #111827;
+    --bg-card: #1f2937;
+    --bg-hover: #374151;
+    --accent-emerald: #10b981;
+    --accent-emerald-dark: #059669;
+    --text-main: #f3f4f6;
+    --text-muted: #9ca3af;
+    --border-color: rgba(255, 255, 255, 0.08); 
+    --shadow-subtle: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    letter-spacing: -0.01em;
+}
+
+/* --- CARTÕES COM ESTILO MODERNO (GLASS / SOFT) --- */
+.acnut-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.acnut-card:hover {
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+/* --- BOTÕES MODERNOS COM TRANSIÇÃO --- */
+.acnut-btn-primary {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #ffffff;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    transition: all 0.2s ease;
+}
+
+.acnut-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+}
+
+.acnut-btn-secondary {
+    background-color: var(--bg-hover);
+    color: var(--text-main);
+    font-weight: 500;
+    padding: 10px 18px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.acnut-btn-secondary:hover {
+    background-color: #4b5563;
+}
+
+/* --- INPUTS E FORMULÁRIOS ESTILIZADOS --- */
+.acnut-input {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.acnut-input:focus {
+    border-color: var(--accent-emerald);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+
+/* --- SCROLLBAR CUSTOMIZADA (Fica elegante e discreta) --- */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+    background: #374151;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #4b5563;
+}
+</style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex">
+<!--  LOGIN -->
+<div id="login-container" class="acnut-login-screen">
+
+    <div class="acnut-login-glow glow-1"></div>
+    <div class="acnut-login-glow glow-2"></div>
+
+    <div class="acnut-login-card">
+
+        <!-- LADO DA MARCA -->
+        <div class="acnut-login-brand">
+
+            <div class="acnut-brand-logo">
+                <div class="acnut-logo-icon">
+                    <i class="fa-solid fa-leaf"></i>
+                </div>
+
+                <div>
+                    <div class="acnut-brand-name">ACNUT</div>
+                    <div class="acnut-brand-subtitle">
+                        Gestão Nutricional Inteligente
+                    </div>
+                </div>
+            </div>
+
+            <div class="acnut-brand-content">
+
+                <h1>
+                    Cuidar da saúde
+                    <span>começa aqui.</span>
+                </h1>
+
+                <p>
+                    Uma plataforma completa para acompanhamento,
+                    avaliação e gestão nutricional dos seus pacientes.
+                </p>
+
+                <div class="acnut-brand-features">
+
+                    <div>
+                        <i class="fa-solid fa-user-doctor"></i>
+                        <span>Gestão de pacientes</span>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Acompanhamento de evolução</span>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-apple-whole"></i>
+                        <span>Planos alimentares</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="acnut-brand-footer">
+                <span>ACNUT</span>
+                <span>•</span>
+                <span>Sistema de Gestão Nutricional</span>
+            </div>
+
+        </div>
+
+
+        <!-- LADO DO LOGIN -->
+        <div class="acnut-login-form-area">
+
+            <div class="acnut-login-header">
+
+                <div class="acnut-mobile-logo">
+                    <div class="acnut-logo-icon">
+                        <i class="fa-solid fa-leaf"></i>
+                    </div>
+                    <strong>ACNUT</strong>
+                </div>
+
+                <h2>Bem-vindo de volta!</h2>
+
+                <p>
+                    Entre na sua conta para continuar.
+                </p>
+
+            </div>
+
+
+            <form onsubmit="fazerLogin(event)">
+
+                <!-- USUÁRIO -->
+                <div class="acnut-field">
+
+                    <label for="login-usuario">
+                        Usuário
+                    </label>
+
+                    <div class="acnut-input-wrapper">
+
+                        <i class="fa-solid fa-user"></i>
+
+                        <input
+                            id="login-usuario"
+                            type="text"
+                            placeholder="Digite seu usuário"
+                            autocomplete="username"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- SENHA -->
+                <div class="acnut-field">
+
+                    <label for="login-senha">
+                        Senha
+                    </label>
+
+                    <div class="acnut-input-wrapper">
+
+                        <i class="fa-solid fa-lock"></i>
+
+                        <input
+                            id="login-senha"
+                            type="password"
+                            placeholder="Digite sua senha"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="acnut-password-toggle"
+                            onclick="alternarSenha()"
+                            aria-label="Mostrar senha"
+                        >
+                            <i
+                                id="icone-senha"
+                                class="fa-solid fa-eye"
+                            ></i>
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- OPÇÕES -->
+                <div class="acnut-login-options">
+
+                    <label class="acnut-remember">
+
+                        <input
+                            type="checkbox"
+                            id="lembrar-login"
+                        >
+
+                        <span>Lembrar-me</span>
+
+                    </label>
+
+                    <a href="#" onclick="return false;">
+                        Esqueci minha senha
+                    </a>
+
+                </div>
+
+
+                <!-- ERRO -->
+                <div
+                    id="login-erro"
+                    class="acnut-login-error"
+                >
+                    <i class="fa-solid fa-circle-exclamation"></i>
+
+                    <span>
+                        Credenciais incorretas. Tente novamente.
+                    </span>
+
+                </div>
+
+
+                <!-- BOTÃO -->
+                <button
+                    type="submit"
+                    class="acnut-login-button"
+                >
+
+                    <span>Entrar no ACNUT</span>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
+
+            </form>
+
+
+            <div class="acnut-login-security">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                <span>
+                    Ambiente seguro e protegido
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- =========================================================HEADER MOBILE========================================================= -->
+<header id="acnut-mobile-header"
+        class="lg:hidden fixed top-0 left-0 right-0 z-40 h-16
+               bg-slate-900/95 backdrop-blur-xl
+               border-b border-white/10
+               flex items-center justify-between px-4">
+
+    <!-- BOTÃO MENU -->
+    <button type="button"
+            onclick="abrirMenuMobile()"
+            class="w-10 h-10 rounded-xl
+                   bg-emerald-500/10
+                   border border-emerald-500/20
+                   text-emerald-400
+                   flex items-center justify-center
+                   active:scale-95 transition">
+
+        <i class="fa-solid fa-bars"></i>
+
+    </button>
+
+
+    <!-- LOGO CENTRAL -->
+    <div class="flex items-center gap-2">
+
+        <i class="fa-solid fa-leaf
+                  text-emerald-400 text-xl"></i>
+
+        <span class="text-lg font-bold
+                     tracking-wide text-emerald-400">
+            ACNUT
+        </span>
+
+    </div>
+
+
+    <!-- USUÁRIO -->
+    <div class="w-10 h-10 rounded-xl
+                bg-gradient-to-br from-emerald-500 to-cyan-500
+                text-white
+                flex items-center justify-center
+                font-bold shadow-lg">
+
+        A
+
+    </div>
+
+</header>
+<!-- =========================================================OVERLAY MOBILE========================================================= -->
+<div id="acnut-menu-overlay"
+     onclick="fecharMenuMobile()"
+     class="hidden fixed inset-0 z-40
+            bg-black/60 backdrop-blur-sm lg:hidden">
+</div>
+<!-- =========================================================SIDEBAR ACNUT========================================================= -->
+<aside id="sidebar-acnut"
+       class="fixed lg:static
+              top-0 left-0 bottom-0
+              z-50 lg:z-auto
+              w-[280px] lg:w-64
+              bg-slate-900
+              border-r border-white/10
+              flex flex-col
+              transform -translate-x-full lg:translate-x-0
+              transition-transform duration-300
+              shadow-2xl lg:shadow-none">
+
+    <!-- =====================================================
+         TOPO
+         ===================================================== -->
+
+    <div class="p-4">
+
+        <div class="flex items-center justify-between
+                    px-2 py-4 mb-5
+                    border-b border-white/10">
+
+            <!-- LOGO -->
+            <div class="flex items-center gap-3">
+
+                <div class="w-10 h-10 rounded-xl
+                            bg-emerald-500/10
+                            border border-emerald-500/20
+                            flex items-center justify-center">
+
+                    <i class="fa-solid fa-leaf
+                              text-emerald-400 text-xl"></i>
+
+                </div>
+
+                <div>
+
+                    <h1 class="text-lg font-bold
+                               tracking-wide text-white">
+                        ACNUT
+                    </h1>
+
+                    <p class="text-[10px] text-slate-500">
+                        Gestão nutricional
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- FECHAR MENU NO CELULAR -->
+            <button type="button"
+                    onclick="fecharMenuMobile()"
+                    class="lg:hidden w-9 h-9 rounded-xl
+                           bg-slate-800
+                           text-slate-400
+                           hover:text-white
+                           flex items-center justify-center
+                           transition">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             MENU PRINCIPAL
+             ================================================= -->
+
+        <nav class="space-y-1">
+
+
+            <!-- DASHBOARD -->
+
+            <button type="button"
+                    onclick="navegar('dashboard'); fecharMenuMobile();"
+                    class="acnut-menu-item">
+
+                <span class="acnut-menu-icon text-emerald-400">
+
+                    <i class="fa-solid fa-table-cells-large"></i>
+
+                </span>
+
+                <span>
+                    Painel Geral
+                </span>
+
+            </button>
+
+
+            <!-- PACIENTES -->
+
+            <button type="button"
+                    onclick="navegar('pacientes'); fecharMenuMobile();"
+                    class="acnut-menu-item">
+
+                <span class="acnut-menu-icon text-blue-400">
+
+                    <i class="fa-solid fa-users"></i>
+
+                </span>
+
+                <span>
+                    Pacientes
+                </span>
+
+            </button>
+
+
+            <!-- AVALIAÇÃO -->
+
+            <button type="button"
+                    onclick="navegar('avaliacao'); fecharMenuMobile();"
+                    class="acnut-menu-item">
+
+                <span class="acnut-menu-icon text-amber-400">
+
+                    <i class="fa-solid fa-calculator"></i>
+
+                </span>
+
+                <span>
+                    Avaliação Nutricional
+                </span>
+
+            </button>
+
+
+            <!-- CHECK-IN -->
+
+            <button type="button"
+                    onclick="navegar('checkin'); fecharMenuMobile();"
+                    class="acnut-menu-item">
+
+                <span class="acnut-menu-icon text-purple-400">
+
+                    <i class="fa-solid fa-calendar-check"></i>
+
+                </span>
+
+                <span>
+                    Check-in Semanal
+                </span>
+
+            </button>
+
+
+            <!-- PRONTUÁRIO -->
+
+            <button type="button"
+                    onclick="navegar('prontuario'); fecharMenuMobile();"
+                    class="acnut-menu-item">
+
+                <span class="acnut-menu-icon text-cyan-400">
+
+                    <i class="fa-solid fa-file-medical"></i>
+
+                </span>
+
+                <span>
+                    Prontuário
+                </span>
+
+            </button>
+
+
+        </nav>
+
+    </div>
+
+
+    <!-- =====================================================
+         PARTE INFERIOR
+         ===================================================== -->
+
+    <div class="mt-auto p-4">
+
+
+        <!-- SAIR -->
+
+        <div class="pt-3 border-t border-white/10">
+
+            <button type="button"
+                    onclick="fazerLogout()"
+                    class="w-full flex items-center gap-3
+                           px-4 py-3 rounded-xl
+                           text-sm font-medium
+                           text-red-400
+                           hover:bg-red-500/10
+                           hover:text-red-300
+                           transition">
+
+                <span class="w-9 h-9 rounded-lg
+                             bg-red-500/10
+                             flex items-center justify-center">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                </span>
+
+                <span>
+                    Sair do Sistema
+                </span>
+
+            </button>
+
+        </div>
+
+
+        <!-- VERSÃO -->
+
+        <div class="text-center pt-4">
+
+            <p class="text-[10px] text-slate-600">
+                ACNUT v1.0 • Microserviços
+            </p>
+
+        </div>
+
+    </div>
+
+</aside>
+<!-- CONTEÚDO PRINCIPAL -->
+<main class="flex-1 p-8 overflow-y-auto">
+<!-- =========================================================SEÇÃO: DASHBOARD/LANCHPAD MODERNO========================================================= -->
+<section id="sec-dashboard" class="space-y-6">
+
+    <!-- HEADER -->
+    <header class="relative overflow-hidden rounded-3xl border border-white/10 bg-slate-900/80 backdrop-blur-xl shadow-2xl">
+        <!-- brilho decorativo -->
+        <div class="absolute -top-24 -right-24 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-32 -left-20 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative flex flex-wrap items-center justify-between gap-5 p-6 lg:p-7">
+
+            <div class="flex items-center gap-4">
+
+                <div class="relative">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-400/25 to-cyan-400/10
+                                border border-emerald-400/20
+                                flex items-center justify-center
+                                text-emerald-400 text-2xl shadow-lg shadow-emerald-500/10">
+                        <i class="fa-solid fa-leaf"></i>
+                    </div>
+
+                    <span class="absolute -right-1 -bottom-1 w-4 h-4 rounded-full
+                                 bg-emerald-400 border-4 border-slate-900"></span>
+                </div>
+
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h2 class="text-2xl font-bold text-white tracking-tight">
+                            Painel Principal
+                        </h2>
+
+                        <span class="hidden sm:inline-flex px-2.5 py-1 rounded-full
+                                     bg-emerald-500/10 border border-emerald-500/20
+                                     text-emerald-400 text-[10px] font-bold uppercase tracking-wider">
+                            ACNUT
+                        </span>
+                    </div>
+
+                    <p class="text-slate-400 text-sm mt-1">
+                        Gestão clínica e nutricional
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="flex items-center gap-3">
+
+                <div class="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-xl
+                            bg-slate-950/60 border border-white/5 text-xs text-slate-400">
+
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+                    </span>
+
+                    Sistema online
+                </div>
+
+                <div class="flex items-center gap-3 px-3 py-2 rounded-xl
+                            bg-slate-950/50 border border-white/5">
+
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-cyan-500
+                                flex items-center justify-center text-white font-bold shadow-lg">
+                        A
+                    </div>
+
+                    <div class="hidden sm:block">
+                        <p class="text-white text-xs font-semibold">Administrador</p>
+                        <p class="text-slate-500 text-[10px]">Sessão ativa</p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+
+    <!-- INDICADORES PRINCIPAIS -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+
+        <!-- PACIENTES -->
+        <div class="group relative overflow-hidden rounded-2xl
+                    bg-gradient-to-br from-slate-900 to-slate-800
+                    border border-white/10 p-5
+                    shadow-xl hover:border-blue-500/30
+                    transition-all duration-300">
+
+            <div class="absolute -right-8 -top-8 w-28 h-28 rounded-full
+                        bg-blue-500/10 blur-2xl
+                        group-hover:bg-blue-500/20 transition-all"></div>
+
+            <div class="relative flex items-start justify-between">
+
+                <div>
+                    <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                        Pacientes
+                    </p>
+
+                    <p id="total-pacientes"
+                       class="text-3xl font-bold text-white mt-2">
+                        0
+                    </p>
+
+                    <p class="text-slate-500 text-xs mt-1">
+                        Total cadastrado
+                    </p>
+                </div>
+
+                <div class="w-11 h-11 rounded-xl bg-blue-500/10
+                            border border-blue-500/10
+                            text-blue-400
+                            flex items-center justify-center text-lg
+                            group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- AVALIAÇÃO -->
+        <div class="group relative overflow-hidden rounded-2xl
+                    bg-gradient-to-br from-slate-900 to-slate-800
+                    border border-white/10 p-5
+                    shadow-xl hover:border-amber-500/30
+                    transition-all duration-300">
+
+            <div class="absolute -right-8 -top-8 w-28 h-28 rounded-full
+                        bg-amber-500/10 blur-2xl
+                        group-hover:bg-amber-500/20 transition-all"></div>
+
+            <div class="relative flex items-start justify-between">
+
+                <div>
+                    <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                        Avaliação
+                    </p>
+
+                    <p class="text-3xl font-bold text-white mt-2">
+                        TMB
+                    </p>
+
+                    <p class="text-slate-500 text-xs mt-1">
+                        Cálculo nutricional
+                    </p>
+                </div>
+
+                <div class="w-11 h-11 rounded-xl bg-amber-500/10
+                            border border-amber-500/10
+                            text-amber-400
+                            flex items-center justify-center text-lg
+                            group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-calculator"></i>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- CHECK-IN -->
+        <div class="group relative overflow-hidden rounded-2xl
+                    bg-gradient-to-br from-slate-900 to-slate-800
+                    border border-white/10 p-5
+                    shadow-xl hover:border-purple-500/30
+                    transition-all duration-300">
+
+            <div class="absolute -right-8 -top-8 w-28 h-28 rounded-full
+                        bg-purple-500/10 blur-2xl
+                        group-hover:bg-purple-500/20 transition-all"></div>
+
+            <div class="relative flex items-start justify-between">
+
+                <div>
+                    <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                        Check-ins
+                    </p>
+
+                    <p class="text-3xl font-bold text-white mt-2">
+                        Semanal
+                    </p>
+
+                    <p class="text-slate-500 text-xs mt-1">
+                        Acompanhamento
+                    </p>
+                </div>
+
+                <div class="w-11 h-11 rounded-xl bg-purple-500/10
+                            border border-purple-500/10
+                            text-purple-400
+                            flex items-center justify-center text-lg
+                            group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- SERVIÇOS -->
+        <div class="group relative overflow-hidden rounded-2xl
+                    bg-gradient-to-br from-slate-900 to-slate-800
+                    border border-white/10 p-5
+                    shadow-xl hover:border-emerald-500/30
+                    transition-all duration-300">
+
+            <div class="absolute -right-8 -top-8 w-28 h-28 rounded-full
+                        bg-emerald-500/10 blur-2xl
+                        group-hover:bg-emerald-500/20 transition-all"></div>
+
+            <div class="relative flex items-start justify-between">
+
+                <div>
+                    <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                        Infraestrutura
+                    </p>
+
+                    <p class="text-3xl font-bold text-emerald-400 mt-2">
+                        Online
+                    </p>
+
+                    <p class="text-slate-500 text-xs mt-1">
+                        Microsserviços ativos
+                    </p>
+                </div>
+
+                <div class="w-11 h-11 rounded-xl bg-emerald-500/10
+                            border border-emerald-500/10
+                            text-emerald-400
+                            flex items-center justify-center text-lg
+                            group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-server"></i>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- MÓDULOS -->
+    <div>
+
+        <div class="flex items-center justify-between mb-4">
+
+            <div>
+                <h3 class="text-lg font-bold text-white">
+                    Módulos
+                </h3>
+
+                <p class="text-slate-500 text-xs mt-1">
+                    Acesse rapidamente as principais áreas do ACNUT
+                </p>
+            </div>
+
+            <span class="hidden sm:inline-flex items-center gap-2
+                         text-xs text-slate-500">
+                <i class="fa-solid fa-grid-2"></i>
+                5 módulos
+            </span>
+
+        </div>
+
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+
+            <!-- PACIENTES -->
+            <div onclick="navegar('pacientes')"
+                 class="group relative overflow-hidden cursor-pointer
+                        rounded-2xl bg-slate-900/80
+                        border border-white/10 p-5
+                        hover:border-blue-500/40
+                        hover:-translate-y-1
+                        shadow-xl hover:shadow-blue-500/5
+                        transition-all duration-300">
+
+                <div class="absolute right-0 top-0 w-24 h-24
+                            bg-blue-500/5 rounded-full blur-2xl
+                            group-hover:bg-blue-500/10"></div>
+
+                <div class="relative flex items-center gap-4">
+
+                    <div class="w-12 h-12 shrink-0 rounded-xl
+                                bg-blue-500/10 border border-blue-500/10
+                                text-blue-400
+                                flex items-center justify-center text-xl
+                                group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-2">
+                            <h4 class="text-white font-bold">
+                                Pacientes
+                            </h4>
+
+                            <span id="badge-total-pacientes"
+                                  class="px-2 py-0.5 rounded-full
+                                         bg-blue-500/10 text-blue-400
+                                         text-[9px] font-bold">
+                                Gestão
+                            </span>
+                        </div>
+
+                        <p class="text-slate-500 text-xs mt-1">
+                            Cadastros e listagem
+                        </p>
+                    </div>
+
+                    <i class="fa-solid fa-chevron-right ml-auto
+                              text-slate-600 group-hover:text-blue-400
+                              group-hover:translate-x-1 transition-all"></i>
+
+                </div>
+            </div>
+
+
+            <!-- AVALIAÇÃO -->
+            <div onclick="navegar('avaliacao')"
+                 class="group relative overflow-hidden cursor-pointer
+                        rounded-2xl bg-slate-900/80
+                        border border-white/10 p-5
+                        hover:border-amber-500/40
+                        hover:-translate-y-1
+                        shadow-xl hover:shadow-amber-500/5
+                        transition-all duration-300">
+
+                <div class="absolute right-0 top-0 w-24 h-24
+                            bg-amber-500/5 rounded-full blur-2xl"></div>
+
+                <div class="relative flex items-center gap-4">
+
+                    <div class="w-12 h-12 shrink-0 rounded-xl
+                                bg-amber-500/10 border border-amber-500/10
+                                text-amber-400
+                                flex items-center justify-center text-xl
+                                group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-calculator"></i>
+                    </div>
+
+                    <div>
+                        <h4 class="text-white font-bold">
+                            Avaliação Física
+                        </h4>
+
+                        <p class="text-slate-500 text-xs mt-1">
+                            TMB e macronutrientes
+                        </p>
+                    </div>
+
+                    <i class="fa-solid fa-chevron-right ml-auto
+                              text-slate-600 group-hover:text-amber-400
+                              group-hover:translate-x-1 transition-all"></i>
+
+                </div>
+            </div>
+
+
+            <!-- CHECK-IN -->
+            <div onclick="navegar('checkin')"
+                 class="group relative overflow-hidden cursor-pointer
+                        rounded-2xl bg-slate-900/80
+                        border border-white/10 p-5
+                        hover:border-purple-500/40
+                        hover:-translate-y-1
+                        shadow-xl hover:shadow-purple-500/5
+                        transition-all duration-300">
+
+                <div class="absolute right-0 top-0 w-24 h-24
+                            bg-purple-500/5 rounded-full blur-2xl"></div>
+
+                <div class="relative flex items-center gap-4">
+
+                    <div class="w-12 h-12 shrink-0 rounded-xl
+                                bg-purple-500/10 border border-purple-500/10
+                                text-purple-400
+                                flex items-center justify-center text-xl
+                                group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+
+                    <div>
+                        <h4 class="text-white font-bold">
+                            Check-in Semanal
+                        </h4>
+
+                        <p class="text-slate-500 text-xs mt-1">
+                            Evolução e adesão
+                        </p>
+                    </div>
+
+                    <i class="fa-solid fa-chevron-right ml-auto
+                              text-slate-600 group-hover:text-purple-400
+                              group-hover:translate-x-1 transition-all"></i>
+
+                </div>
+            </div>
+
+
+            <!-- PRONTUÁRIO -->
+            <div onclick="navegar('prontuario')"
+                 class="group relative overflow-hidden cursor-pointer
+                        rounded-2xl bg-slate-900/80
+                        border border-white/10 p-5
+                        hover:border-cyan-500/40
+                        hover:-translate-y-1
+                        shadow-xl hover:shadow-cyan-500/5
+                        transition-all duration-300">
+
+                <div class="absolute right-0 top-0 w-24 h-24
+                            bg-cyan-500/5 rounded-full blur-2xl"></div>
+
+                <div class="relative flex items-center gap-4">
+
+                    <div class="w-12 h-12 shrink-0 rounded-xl
+                                bg-cyan-500/10 border border-cyan-500/10
+                                text-cyan-400
+                                flex items-center justify-center text-xl
+                                group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-file-medical"></i>
+                    </div>
+
+                    <div>
+                        <h4 class="text-white font-bold">
+                            Prontuário Clínico
+                        </h4>
+
+                        <p class="text-slate-500 text-xs mt-1">
+                            Histórico e planos
+                        </p>
+                    </div>
+
+                    <i class="fa-solid fa-chevron-right ml-auto
+                              text-slate-600 group-hover:text-cyan-400
+                              group-hover:translate-x-1 transition-all"></i>
+
+                </div>
+            </div>
+
+
+            <!-- PAINEL -->
+            <div onclick="navegar('dashboard')"
+                 class="group relative overflow-hidden cursor-pointer
+                        rounded-2xl bg-slate-900/80
+                        border border-emerald-500/20 p-5
+                        hover:border-emerald-500/50
+                        hover:-translate-y-1
+                        shadow-xl hover:shadow-emerald-500/5
+                        transition-all duration-300">
+
+                <div class="absolute right-0 top-0 w-24 h-24
+                            bg-emerald-500/5 rounded-full blur-2xl"></div>
+
+                <div class="relative flex items-center gap-4">
+
+                    <div class="w-12 h-12 shrink-0 rounded-xl
+                                bg-emerald-500/10 border border-emerald-500/10
+                                text-emerald-400
+                                flex items-center justify-center text-xl
+                                group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+
+                    <div>
+                        <h4 class="text-white font-bold">
+                            Painel Geral
+                        </h4>
+
+                        <p class="text-slate-500 text-xs mt-1">
+                            Visão geral do sistema
+                        </p>
+                    </div>
+
+                    <i class="fa-solid fa-chevron-right ml-auto
+                              text-slate-600 group-hover:text-emerald-400
+                              group-hover:translate-x-1 transition-all"></i>
+
+                </div>
+            </div>
+
+
+            <!-- MICROSSERVIÇOS -->
+            <div class="group relative overflow-hidden
+                        rounded-2xl bg-slate-900/60
+                        border border-white/5 p-5
+                        opacity-90">
+
+                <div class="relative flex items-center gap-4">
+
+                    <div class="w-12 h-12 shrink-0 rounded-xl
+                                bg-rose-500/10 border border-rose-500/10
+                                text-rose-400
+                                flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-server"></i>
+                    </div>
+
+                    <div>
+                        <div class="flex items-center gap-2">
+
+                            <h4 class="text-white font-bold">
+                                Microsserviços
+                            </h4>
+
+                            <span class="flex items-center gap-1.5
+                                         text-[9px] font-bold text-emerald-400
+                                         uppercase">
+
+                                <span class="w-1.5 h-1.5 rounded-full
+                                             bg-emerald-400 animate-pulse"></span>
+
+                                Online
+                            </span>
+
+                        </div>
+
+                        <p class="text-slate-500 text-xs mt-1">
+                            Python & C# ativos
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- STATUS DA INFRAESTRUTURA -->
+    <div>
+
+        <div class="flex items-center gap-2 mb-4">
+            <i class="fa-solid fa-wave-square text-emerald-400"></i>
+
+            <div>
+                <h3 class="text-lg font-bold text-white">
+                    Status da infraestrutura
+                </h3>
+
+                <p class="text-slate-500 text-xs mt-1">
+                    Monitoramento dos serviços do ACNUT
+                </p>
+            </div>
+        </div>
+
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            <!-- C# -->
+            <div class="flex items-center justify-between
+                        rounded-2xl bg-slate-900/80
+                        border border-white/10 p-5
+                        shadow-lg">
+
+                <div class="flex items-center gap-4">
+
+                    <div class="w-11 h-11 rounded-xl
+                                bg-blue-500/10 text-blue-400
+                                flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+
+                    <div>
+                        <p class="text-white font-semibold text-sm">
+                            Orchestrator C#
+                        </p>
+
+                        <p class="text-slate-500 text-xs mt-1">
+                            Porta 5001
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span class="text-emerald-400 text-xs font-bold">
+                        ATIVO
+                    </span>
+                </div>
+
+            </div>
+
+
+            <!-- PYTHON -->
+            <div class="flex items-center justify-between
+                        rounded-2xl bg-slate-900/80
+                        border border-white/10 p-5
+                        shadow-lg">
+
+                <div class="flex items-center gap-4">
+
+                    <div class="w-11 h-11 rounded-xl
+                                bg-amber-500/10 text-amber-400
+                                flex items-center justify-center text-lg">
+                        <i class="fa-brands fa-python"></i>
+                    </div>
+
+                    <div>
+                        <p class="text-white font-semibold text-sm">
+                            Python Engine
+                        </p>
+
+                        <p class="text-slate-500 text-xs mt-1">
+                            Porta 5000
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span class="text-emerald-400 text-xs font-bold">
+                        ATIVO
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- =========================================================SEÇÃO: PACIENTES========================================================= -->
+<section id="sec-pacientes" class="hidden space-y-6">
+
+    <!-- CABEÇALHO -->
+    <header class="
+        flex flex-col md:flex-row
+        md:items-center md:justify-between
+        gap-4
+        bg-slate-800/70
+        backdrop-blur-xl
+        p-6
+        rounded-3xl
+        border border-slate-700/60
+        shadow-xl
+    ">
+
+        <div>
+
+            <div class="flex items-center gap-3">
+
+                <div class="
+                    w-11 h-11
+                    flex items-center justify-center
+                    rounded-2xl
+                    bg-emerald-500/15
+                    text-emerald-400
+                    border border-emerald-500/20
+                ">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+
+                <div>
+
+                    <h2 class="
+                        text-2xl
+                        font-extrabold
+                        text-white
+                        tracking-tight
+                    ">
+                        Gestão de Pacientes
+                    </h2>
+
+                    <p class="text-sm text-slate-400 mt-1">
+                        Cadastre, consulte e gerencie seus pacientes.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         FORMULÁRIO
+    ====================================================== -->
+
+    <div class="
+        bg-slate-800/70
+        backdrop-blur-xl
+        p-6 md:p-7
+        rounded-3xl
+        border border-slate-700/60
+        shadow-xl
+    ">
+
+        <!-- TÍTULO -->
+
+        <div class="flex items-center gap-3 mb-6">
+
+            <div class="
+                w-10 h-10
+                rounded-xl
+                bg-blue-500/15
+                text-blue-400
+                flex items-center justify-center
+            ">
+                <i class="fa-solid fa-user-plus"></i>
+            </div>
+
+            <div>
+
+                <h3 class="text-base font-bold text-white">
+                    Novo paciente
+                </h3>
+
+                <p class="text-xs text-slate-400">
+                    Preencha os dados básicos do paciente.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form
+            id="form-paciente"
+            onsubmit="cadastrarPaciente(event)"
+            class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5"
+        >
+
+            <!-- NOME -->
+
+            <div class="space-y-2">
+
+                <label class="text-xs font-semibold text-slate-400">
+                    Nome completo
+                </label>
+
+                <div class="relative">
+
+                    <i class="
+                        fa-solid fa-user
+                        absolute left-4 top-1/2
+                        -translate-y-1/2
+                        text-slate-500
+                        text-sm
+                    "></i>
+
+                    <input
+                        type="text"
+                        id="p-nome"
+                        placeholder="Ex: João da Silva"
+                        required
+                        class="
+                            w-full
+                            h-12
+                            pl-11 pr-4
+                            bg-slate-900/70
+                            border border-slate-700
+                            rounded-xl
+                            text-sm
+                            text-white
+                            placeholder-slate-600
+                            outline-none
+                            transition-all
+                            focus:border-emerald-500
+                            focus:ring-4
+                            focus:ring-emerald-500/10
+                        "
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="space-y-2">
+
+                <label class="text-xs font-semibold text-slate-400">
+                    E-mail
+                </label>
+
+                <div class="relative">
+
+                    <i class="
+                        fa-solid fa-envelope
+                        absolute left-4 top-1/2
+                        -translate-y-1/2
+                        text-slate-500
+                        text-sm
+                    "></i>
+
+                    <input
+                        type="email"
+                        id="p-email"
+                        placeholder="cliente@email.com"
+                        required
+                        class="
+                            w-full
+                            h-12
+                            pl-11 pr-4
+                            bg-slate-900/70
+                            border border-slate-700
+                            rounded-xl
+                            text-sm
+                            text-white
+                            placeholder-slate-600
+                            outline-none
+                            transition-all
+                            focus:border-emerald-500
+                            focus:ring-4
+                            focus:ring-emerald-500/10
+                        "
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- TELEFONE -->
+
+            <div class="space-y-2">
+
+                <label class="text-xs font-semibold text-slate-400">
+                    Telefone
+                </label>
+
+                <div class="relative">
+
+                    <i class="
+                        fa-solid fa-phone
+                        absolute left-4 top-1/2
+                        -translate-y-1/2
+                        text-slate-500
+                        text-sm
+                    "></i>
+
+                    <input
+                        type="text"
+                        id="p-telefone"
+                        placeholder="(11) 98765-4321"
+                        class="
+                            w-full
+                            h-12
+                            pl-11 pr-4
+                            bg-slate-900/70
+                            border border-slate-700
+                            rounded-xl
+                            text-sm
+                            text-white
+                            placeholder-slate-600
+                            outline-none
+                            transition-all
+                            focus:border-emerald-500
+                            focus:ring-4
+                            focus:ring-emerald-500/10
+                        "
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- DATA -->
+
+            <div class="space-y-2">
+
+                <label class="text-xs font-semibold text-slate-400">
+                    Data de nascimento
+                </label>
+
+                <div class="relative">
+
+                    <i class="
+                        fa-solid fa-calendar
+                        absolute left-4 top-1/2
+                        -translate-y-1/2
+                        text-slate-500
+                        text-sm
+                        pointer-events-none
+                    "></i>
+
+                    <input
+                        type="date"
+                        id="p-data"
+                        required
+                        class="
+                            w-full
+                            h-12
+                            pl-11 pr-4
+                            bg-slate-900/70
+                            border border-slate-700
+                            rounded-xl
+                            text-sm
+                            text-white
+                            outline-none
+                            transition-all
+                            focus:border-emerald-500
+                            focus:ring-4
+                            focus:ring-emerald-500/10
+                        "
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- SEXO -->
+
+            <div class="space-y-2">
+
+                <label class="text-xs font-semibold text-slate-400">
+                    Sexo
+                </label>
+
+                <div class="relative">
+
+                    <i class="
+                        fa-solid fa-venus-mars
+                        absolute left-4 top-1/2
+                        -translate-y-1/2
+                        text-slate-500
+                        text-sm
+                        pointer-events-none
+                    "></i>
+
+                    <select
+                        id="p-sexo"
+                        required
+                        class="
+                            w-full
+                            h-12
+                            pl-11 pr-4
+                            bg-slate-900/70
+                            border border-slate-700
+                            rounded-xl
+                            text-sm
+                            text-white
+                            outline-none
+                            transition-all
+                            focus:border-emerald-500
+                            focus:ring-4
+                            focus:ring-emerald-500/10
+                        "
+                    >
+
+                        <option value="M">
+                            Masculino
+                        </option>
+
+                        <option value="F">
+                            Feminino
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- BOTÕES -->
+
+            <div class="
+                flex
+                items-end
+                gap-3
+            ">
+
+                <button
+                    type="submit"
+                    class="
+                        flex-1
+                        h-12
+                        rounded-xl
+                        bg-gradient-to-r
+                        from-emerald-600
+                        to-teal-500
+                        hover:from-emerald-500
+                        hover:to-teal-400
+                        text-white
+                        font-bold
+                        text-sm
+                        shadow-lg
+                        shadow-emerald-600/20
+                        transition-all
+                        hover:-translate-y-0.5
+                        active:scale-[0.98]
+                    "
+                >
+
+                    <i class="fa-solid fa-plus mr-2"></i>
+
+                    Cadastrar Paciente
+
+                </button>
+
+
+                <button
+                    type="button"
+                    id="btn-cancelar"
+                    onclick="cancelarEdicao()"
+                    class="
+                        hidden
+                        h-12
+                        px-5
+                        rounded-xl
+                        bg-slate-700
+                        hover:bg-slate-600
+                        text-white
+                        font-semibold
+                        text-sm
+                        transition
+                    "
+                >
+
+                    Cancelar
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- =====================================================
+         TABELA
+    ====================================================== -->
+
+    <div class="
+        bg-slate-800/70
+        backdrop-blur-xl
+        rounded-3xl
+        border border-slate-700/60
+        shadow-xl
+        overflow-hidden
+    ">
+
+        <!-- CABEÇALHO DA TABELA -->
+
+        <div class="
+            px-6 py-5
+            border-b border-slate-700/60
+            flex flex-col md:flex-row
+            md:items-center
+            md:justify-between
+            gap-3
+        ">
+
+            <div class="flex items-center gap-3">
+
+                <div class="
+                    w-10 h-10
+                    rounded-xl
+                    bg-purple-500/15
+                    text-purple-400
+                    flex items-center justify-center
+                ">
+                    <i class="fa-solid fa-address-book"></i>
+                </div>
+
+                <div>
+
+                    <h3 class="text-base font-bold text-white">
+                        Pacientes cadastrados
+                    </h3>
+
+                    <p class="text-xs text-slate-400">
+                        Lista completa dos pacientes do sistema.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- TABELA -->
+
+        <div class="w-full overflow-x-auto">
+
+            <table class="w-full">
+
+                <thead class="
+                    bg-slate-900/60
+                    border-b border-slate-700/70
+                ">
+
+                    <tr>
+
+                        <th class="
+                            px-6 py-4
+                            text-left
+                            text-[11px]
+                            font-bold
+                            uppercase
+                            tracking-wider
+                            text-slate-500
+                        ">
+                            ID
+                        </th>
+
+                        <th class="
+                            px-6 py-4
+                            text-left
+                            text-[11px]
+                            font-bold
+                            uppercase
+                            tracking-wider
+                            text-slate-500
+                        ">
+                            Paciente
+                        </th>
+
+                        <th class="
+                            px-6 py-4
+                            text-left
+                            text-[11px]
+                            font-bold
+                            uppercase
+                            tracking-wider
+                            text-slate-500
+                        ">
+                            E-mail
+                        </th>
+
+                        <th class="
+                            px-6 py-4
+                            text-left
+                            text-[11px]
+                            font-bold
+                            uppercase
+                            tracking-wider
+                            text-slate-500
+                        ">
+                            Nascimento
+                        </th>
+
+                        <th class="
+                            px-6 py-4
+                            text-left
+                            text-[11px]
+                            font-bold
+                            uppercase
+                            tracking-wider
+                            text-slate-500
+                        ">
+                            Telefone
+                        </th>
+
+                        <th class="
+                            px-6 py-4
+                            text-left
+                            text-[11px]
+                            font-bold
+                            uppercase
+                            tracking-wider
+                            text-slate-500
+                        ">
+                            Status
+                        </th>
+
+                        <th class="
+                            px-6 py-4
+                            text-center
+                            text-[11px]
+                            font-bold
+                            uppercase
+                            tracking-wider
+                            text-slate-500
+                        ">
+                            Ações
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="tabela-pacientes"
+                    class="divide-y divide-slate-700/40"
+                >
+
+                    <!-- JS INSERE OS PACIENTES AQUI -->
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ========================================================SEÇÃO: AVALIAÇÃO NUTRICIONAL========================================================= -->
+      <section id="sec-avaliacao" class="hidden space-y-6">
+      <!-- CABEÇALHO -->
+      <header class="bg-slate-800/60 backdrop-blur-md p-6 rounded-2xl border border-slate-700/70 shadow-xl">
+      <div class="flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/20
+      flex items-center justify-center">
+      <i class="fa-solid fa-calculator text-amber-400 text-lg"></i>
+      </div>
+      <div>
+      <h2 class="text-2xl font-extrabold text-white tracking-tight"> Avaliação Nutricional </h2>
+      <p class="text-sm text-slate-400 mt-1">Avaliação física, cálculo energético e definição de metas nutricionais.</p>
+      </div>
+      </div>
+      </header>
+      <!-- ===================================================== FORMULÁRIO DE AVALIAÇÃO===================================================== -->
+      <div class="bg-slate-800/80 backdrop-blur-xl p-7 rounded-2xl
+      border border-slate-700/80 shadow-2xl">
+      <!-- TÍTULO DO CARD -->
+      <div class="flex items-center gap-3 mb-6">
+      <div class="w-10 h-10 rounded-xl bg-blue-500/15
+      flex items-center justify-center">
+      <i class="fa-solid fa-user-check text-blue-400"></i>
+      </div>
+      <div>
+      <h3 class="text-base font-bold text-white">
+      Dados da avaliação
+      </h3>
+      <p class="text-xs text-slate-400 mt-1"> Informe os dados do paciente para realizar o cálculo automático. </p>
+      </div>
+      </div>
+      <form
+      id="form-avaliacao"
+      onsubmit="gerarAvaliacao(event)"
+      class="space-y-6"
+      >
+      <!-- ================================================= DADOS BÁSICOS ================================================= -->
+      <div>
+      <div class="flex items-center gap-2 mb-3">
+      <i class="fa-solid fa-id-card text-slate-500 text-xs"></i>
+      <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">
+      Dados básicos
+      </span>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- ID PACIENTE -->
+      <div>
+      <label class="block text-xs font-semibold text-slate-400 mb-2">
+      ID do Paciente
+      </label>
+      <div class="relative">
+      <i class="fa-solid fa-hashtag absolute left-4 top-1/2
+                                      -translate-y-1/2 text-slate-500 text-sm"></i>
+
+                            <input
+                                type="number"
+                                id="a-paciente-id"
+                                placeholder="Ex: 1"
+                                required
+                                class="w-full bg-slate-900/90 border border-slate-700/80
+                                       p-3.5 pl-11 rounded-xl text-sm text-white
+                                       placeholder-slate-600
+                                       focus:outline-none focus:border-amber-500
+                                       focus:ring-2 focus:ring-amber-500/20
+                                       transition-all"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- IDADE -->
+                    <div>
+
+                        <label class="block text-xs font-semibold text-slate-400 mb-2">
+                            Idade
+                        </label>
+
+                        <div class="relative">
+
+                            <i class="fa-solid fa-calendar-days absolute left-4 top-1/2
+                                      -translate-y-1/2 text-slate-500 text-sm"></i>
+
+                            <input
+                                type="number"
+                                id="a-idade"
+                                placeholder="Ex: 30"
+                                required
+                                class="w-full bg-slate-900/90 border border-slate-700/80
+                                       p-3.5 pl-11 rounded-xl text-sm text-white
+                                       placeholder-slate-600
+                                       focus:outline-none focus:border-amber-500
+                                       focus:ring-2 focus:ring-amber-500/20
+                                       transition-all"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SEXO -->
+                    <div>
+
+                        <label class="block text-xs font-semibold text-slate-400 mb-2">
+                            Sexo
+                        </label>
+
+                        <div class="relative">
+
+                            <i class="fa-solid fa-venus-mars absolute left-4 top-1/2
+                                      -translate-y-1/2 text-slate-500 text-sm"></i>
+
+                            <select
+                                id="a-sexo"
+                                class="w-full bg-slate-900/90 border border-slate-700/80
+                                       p-3.5 pl-11 rounded-xl text-sm text-white
+                                       focus:outline-none focus:border-amber-500
+                                       focus:ring-2 focus:ring-amber-500/20
+                                       transition-all appearance-none"
+                            >
+
+                                <option value="M">
+                                    Masculino
+                                </option>
+
+                                <option value="F">
+                                    Feminino
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 MEDIDAS CORPORAIS
+                 ================================================= -->
+
+            <div>
+
+                <div class="flex items-center gap-2 mb-3">
+
+                    <i class="fa-solid fa-weight-scale text-slate-500 text-xs"></i>
+
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                        Medidas corporais
+                    </span>
+
+                </div>
+
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+                    <!-- PESO -->
+                    <div>
+
+                        <label class="block text-xs font-semibold text-slate-400 mb-2">
+                            Peso
+                        </label>
+
+                        <div class="relative">
+
+                            <i class="fa-solid fa-weight-scale absolute left-4 top-1/2
+                                      -translate-y-1/2 text-emerald-500/70 text-sm"></i>
+
+                            <input
+                                type="number"
+                                step="0.1"
+                                id="a-peso"
+                                placeholder="Ex: 75.5"
+                                required
+                                class="w-full bg-slate-900/90 border border-slate-700/80
+                                       p-3.5 pl-11 pr-12 rounded-xl text-sm text-white
+                                       placeholder-slate-600
+                                       focus:outline-none focus:border-emerald-500
+                                       focus:ring-2 focus:ring-emerald-500/20
+                                       transition-all"
+                            >
+
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2
+                                         text-xs text-slate-500">
+                                kg
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ALTURA -->
+                    <div>
+
+                        <label class="block text-xs font-semibold text-slate-400 mb-2">
+                            Altura
+                        </label>
+
+                        <div class="relative">
+
+                            <i class="fa-solid fa-ruler-vertical absolute left-4 top-1/2
+                                      -translate-y-1/2 text-blue-500/70 text-sm"></i>
+
+                            <input
+                                type="number"
+                                step="0.1"
+                                id="a-altura"
+                                placeholder="Ex: 175"
+                                required
+                                class="w-full bg-slate-900/90 border border-slate-700/80
+                                       p-3.5 pl-11 pr-12 rounded-xl text-sm text-white
+                                       placeholder-slate-600
+                                       focus:outline-none focus:border-blue-500
+                                       focus:ring-2 focus:ring-blue-500/20
+                                       transition-all"
+                            >
+
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2
+                                         text-xs text-slate-500">
+                                cm
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- GORDURA -->
+                    <div>
+
+                        <label class="block text-xs font-semibold text-slate-400 mb-2">
+                            Gordura corporal
+                        </label>
+
+                        <div class="relative">
+
+                            <i class="fa-solid fa-percent absolute left-4 top-1/2
+                                      -translate-y-1/2 text-purple-500/70 text-sm"></i>
+
+                            <input
+                                type="number"
+                                step="0.1"
+                                id="a-gordura"
+                                placeholder="Ex: 18"
+                                class="w-full bg-slate-900/90 border border-slate-700/80
+                                       p-3.5 pl-11 pr-12 rounded-xl text-sm text-white
+                                       placeholder-slate-600
+                                       focus:outline-none focus:border-purple-500
+                                       focus:ring-2 focus:ring-purple-500/20
+                                       transition-all"
+                            >
+
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2
+                                         text-xs text-slate-500">
+                                %
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- MASSA MAGRA -->
+                    <div>
+
+                        <label class="block text-xs font-semibold text-slate-400 mb-2">
+                            Massa magra
+                        </label>
+
+                        <div class="relative">
+
+                            <i class="fa-solid fa-person-running absolute left-4 top-1/2
+                                      -translate-y-1/2 text-cyan-500/70 text-sm"></i>
+
+                            <input
+                                type="number"
+                                step="0.1"
+                                id="a-massa"
+                                placeholder="Ex: 61.5"
+                                class="w-full bg-slate-900/90 border border-slate-700/80
+                                       p-3.5 pl-11 pr-12 rounded-xl text-sm text-white
+                                       placeholder-slate-600
+                                       focus:outline-none focus:border-cyan-500
+                                       focus:ring-2 focus:ring-cyan-500/20
+                                       transition-all"
+                            >
+
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2
+                                         text-xs text-slate-500">
+                                kg
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 OBJETIVO E ATIVIDADE
+                 ================================================= -->
+
+            <div>
+
+                <div class="flex items-center gap-2 mb-3">
+
+                    <i class="fa-solid fa-bullseye text-slate-500 text-xs"></i>
+
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                        Perfil nutricional
+                    </span>
+
+                </div>
+
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                    <!-- ATIVIDADE -->
+                    <div>
+
+                        <label class="block text-xs font-semibold text-slate-400 mb-2">
+                            Nível de atividade física
+                        </label>
+
+                        <div class="relative">
+
+                            <i class="fa-solid fa-person-walking absolute left-4 top-1/2
+                                      -translate-y-1/2 text-orange-400 text-sm"></i>
+
+                            <select
+                                id="a-atividade"
+                                class="w-full bg-slate-900/90 border border-slate-700/80
+                                       p-3.5 pl-11 rounded-xl text-sm text-white
+                                       focus:outline-none focus:border-orange-500
+                                       focus:ring-2 focus:ring-orange-500/20
+                                       transition-all appearance-none"
+                            >
+
+                                <option value="sedentario">
+                                    Sedentário
+                                </option>
+
+                                <option value="leve">
+                                    Leve
+                                </option>
+
+                                <option value="moderado">
+                                    Moderado
+                                </option>
+
+                                <option value="intenso">
+                                    Intenso
+                                </option>
+
+                                <option value="muito_intenso">
+                                    Muito Intenso
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- OBJETIVO -->
+                    <div>
+
+                        <label class="block text-xs font-semibold text-slate-400 mb-2">
+                            Objetivo nutricional
+                        </label>
+
+                        <div class="relative">
+
+                            <i class="fa-solid fa-bullseye absolute left-4 top-1/2
+                                      -translate-y-1/2 text-emerald-400 text-sm"></i>
+
+                            <select
+                                id="a-objetivo"
+                                class="w-full bg-slate-900/90 border border-slate-700/80
+                                       p-3.5 pl-11 rounded-xl text-sm text-white
+                                       focus:outline-none focus:border-emerald-500
+                                       focus:ring-2 focus:ring-emerald-500/20
+                                       transition-all appearance-none"
+                            >
+
+                                <option value="perder_gordura">
+                                    Perder Gordura
+                                </option>
+
+                                <option value="manter_peso">
+                                    Manter Peso
+                                </option>
+
+                                <option value="ganhar_massa">
+                                    Ganhar Massa
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 BOTÃO
+                 ================================================= -->
+
+            <div class="pt-2">
+
+                <button
+                    type="submit"
+                    class="w-full flex items-center justify-center gap-3
+                           bg-gradient-to-r from-amber-500 via-orange-500 to-emerald-500
+                           hover:from-amber-400 hover:via-orange-400 hover:to-emerald-400
+                           text-white font-bold p-4 rounded-xl
+                           transition-all duration-200
+                           shadow-lg shadow-orange-500/20
+                           active:scale-[0.99]"
+                >
+
+                    <i class="fa-solid fa-calculator"></i>
+
+                    <span>
+                        Processar Avaliação Nutricional
+                    </span>
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- =====================================================
+         RESULTADO DO CÁLCULO
+         ===================================================== -->
+
+    <div
+        id="resultado-avaliacao"
+        class="hidden bg-slate-800/80 backdrop-blur-xl p-7 rounded-2xl
+               border border-emerald-500/30 shadow-2xl space-y-6"
+    >
+
+        <!-- CABEÇALHO DO RESULTADO -->
+
+        <div class="flex items-center gap-4">
+
+            <div class="w-11 h-11 rounded-xl bg-emerald-500/15
+                        border border-emerald-500/20
+                        flex items-center justify-center">
+
+                <i class="fa-solid fa-chart-line text-emerald-400"></i>
+
+            </div>
+
+            <div>
+
+                <h3 class="text-lg font-bold text-white">
+                    Resultado da Avaliação
+                </h3>
+
+                <p class="text-xs text-slate-400 mt-1">
+                    Dados clínicos e metas calculadas automaticamente.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- CARDS GERADOS PELO JS -->
+
+        <div
+            id="cards-resultado"
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+        >
+        </div>
+
+    </div>
+
+</section>
+<!-- =========================================================SEÇÃO: CHECK-IN SEMANAL========================================================= -->
+<section id="sec-checkin" class="hidden space-y-6">
+
+    <!-- CABEÇALHO -->
+    <header class="bg-slate-800/40 backdrop-blur-md p-5 rounded-2xl border border-slate-700/60 shadow-xl">
+
+        <div class="flex items-center gap-4">
+
+            <div class="w-12 h-12 rounded-2xl
+                        bg-gradient-to-br from-emerald-500/20 to-emerald-400/5
+                        border border-emerald-500/20
+                        flex items-center justify-center">
+
+                <i class="fa-solid fa-calendar-check text-emerald-400 text-lg"></i>
+
+            </div>
+
+            <div>
+
+                <h2 class="text-2xl font-extrabold text-white tracking-tight">
+                    Check-in Semanal
+                </h2>
+
+                <p class="text-sm text-slate-400 mt-1">
+                    Registre o acompanhamento semanal do paciente
+                </p>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- ÁREA PRINCIPAL -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+
+        <!-- CARD INFORMATIVO -->
+        <div class="lg:col-span-1">
+
+            <div class="h-full bg-gradient-to-br
+                        from-emerald-600/15
+                        via-slate-800/80
+                        to-slate-900/80
+                        backdrop-blur-xl
+                        p-7
+                        rounded-2xl
+                        border border-emerald-500/20
+                        shadow-2xl">
+
+                <div class="w-14 h-14 rounded-2xl
+                            bg-emerald-500/10
+                            border border-emerald-500/20
+                            flex items-center justify-center
+                            mb-6">
+
+                    <i class="fa-solid fa-chart-line text-emerald-400 text-xl"></i>
+
+                </div>
+
+
+                <h3 class="text-xl font-bold text-white mb-3">
+                    Acompanhamento
+                </h3>
+
+                <p class="text-sm text-slate-400 leading-6">
+                    Registre os principais dados da semana para acompanhar
+                    a evolução, adesão ao plano alimentar e observações
+                    importantes do paciente.
+                </p>
+
+
+                <!-- INDICADORES -->
+
+                <div class="mt-8 space-y-4">
+
+                    <div class="flex items-center gap-3">
+
+                        <div class="w-9 h-9 rounded-xl bg-blue-500/10
+                                    flex items-center justify-center">
+
+                            <i class="fa-solid fa-weight-scale text-blue-400 text-sm"></i>
+
+                        </div>
+
+                        <div>
+
+                            <p class="text-xs text-slate-500 uppercase tracking-wider">
+                                Evolução
+                            </p>
+
+                            <p class="text-sm text-slate-300 font-medium">
+                                Peso semanal
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="flex items-center gap-3">
+
+                        <div class="w-9 h-9 rounded-xl bg-purple-500/10
+                                    flex items-center justify-center">
+
+                            <i class="fa-solid fa-percent text-purple-400 text-sm"></i>
+
+                        </div>
+
+                        <div>
+
+                            <p class="text-xs text-slate-500 uppercase tracking-wider">
+                                Adesão
+                            </p>
+
+                            <p class="text-sm text-slate-300 font-medium">
+                                Acompanhamento da dieta
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="flex items-center gap-3">
+
+                        <div class="w-9 h-9 rounded-xl bg-amber-500/10
+                                    flex items-center justify-center">
+
+                            <i class="fa-solid fa-note-sticky text-amber-400 text-sm"></i>
+
+                        </div>
+
+                        <div>
+
+                            <p class="text-xs text-slate-500 uppercase tracking-wider">
+                                Registro
+                            </p>
+
+                            <p class="text-sm text-slate-300 font-medium">
+                                Observações clínicas
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FORMULÁRIO -->
+        <div class="lg:col-span-2">
+
+            <div class="bg-slate-800/80 backdrop-blur-xl
+                        p-7
+                        rounded-2xl
+                        border border-slate-700/80
+                        shadow-2xl">
+
+                <!-- TÍTULO DO FORMULÁRIO -->
+
+                <div class="flex items-center justify-between mb-7">
+
+                    <div>
+
+                        <h3 class="text-lg font-bold text-white">
+                            Registrar novo check-in
+                        </h3>
+
+                        <p class="text-sm text-slate-400 mt-1">
+                            Preencha os dados referentes à semana atual.
+                        </p>
+
+                    </div>
+
+                    <div class="hidden sm:flex w-10 h-10 rounded-xl
+                                bg-slate-900/70
+                                border border-slate-700
+                                items-center justify-center">
+
+                        <i class="fa-solid fa-clipboard-check text-emerald-400"></i>
+
+                    </div>
+
+                </div>
+
+
+                <form
+                    onsubmit="salvarCheckin(event)"
+                    class="space-y-5"
+                >
+
+
+                    <!-- ID DO PACIENTE -->
+
+                    <div>
+
+                        <label
+                            for="c-paciente-id"
+                            class="block text-xs font-semibold
+                                   text-slate-400 uppercase
+                                   tracking-wider mb-2"
+                        >
+                            Paciente
+                        </label>
+
+                        <div class="relative">
+
+                            <i class="fa-solid fa-user
+                                      absolute left-4 top-1/2
+                                      -translate-y-1/2
+                                      text-slate-500 text-sm"></i>
+
+                            <input
+                                type="number"
+                                id="c-paciente-id"
+                                placeholder="Digite o ID do paciente"
+                                required
+                                class="w-full
+                                       bg-slate-900/90
+                                       border border-slate-700/80
+                                       p-3.5 pl-11
+                                       rounded-xl
+                                       text-sm text-white
+                                       placeholder-slate-500
+                                       focus:outline-none
+                                       focus:border-emerald-500
+                                       focus:ring-2
+                                       focus:ring-emerald-500/20
+                                       transition-all"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PESO + ADESÃO -->
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+
+                        <!-- PESO -->
+
+                        <div>
+
+                            <label
+                                for="c-peso"
+                                class="block text-xs font-semibold
+                                       text-slate-400 uppercase
+                                       tracking-wider mb-2"
+                            >
+                                Peso atual
+                            </label>
+
+                            <div class="relative">
+
+                                <i class="fa-solid fa-weight-scale
+                                          absolute left-4 top-1/2
+                                          -translate-y-1/2
+                                          text-slate-500 text-sm"></i>
+
+                                <input
+                                    type="number"
+                                    step="0.1"
+                                    id="c-peso"
+                                    placeholder="Ex: 75.5"
+                                    required
+                                    class="w-full
+                                           bg-slate-900/90
+                                           border border-slate-700/80
+                                           p-3.5 pl-11 pr-14
+                                           rounded-xl
+                                           text-sm text-white
+                                           placeholder-slate-500
+                                           focus:outline-none
+                                           focus:border-emerald-500
+                                           focus:ring-2
+                                           focus:ring-emerald-500/20
+                                           transition-all"
+                                >
+
+                                <span class="absolute right-4 top-1/2
+                                             -translate-y-1/2
+                                             text-xs text-slate-500">
+                                    kg
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ADESÃO -->
+
+                        <div>
+
+                            <label
+                                for="c-adesao"
+                                class="block text-xs font-semibold
+                                       text-slate-400 uppercase
+                                       tracking-wider mb-2"
+                            >
+                                Adesão à dieta
+                            </label>
+
+                            <div class="relative">
+
+                                <i class="fa-solid fa-percent
+                                          absolute left-4 top-1/2
+                                          -translate-y-1/2
+                                          text-slate-500 text-sm"></i>
+
+                                <input
+                                    type="number"
+                                    id="c-adesao"
+                                    min="0"
+                                    max="100"
+                                    placeholder="Ex: 85"
+                                    required
+                                    class="w-full
+                                           bg-slate-900/90
+                                           border border-slate-700/80
+                                           p-3.5 pl-11 pr-14
+                                           rounded-xl
+                                           text-sm text-white
+                                           placeholder-slate-500
+                                           focus:outline-none
+                                           focus:border-emerald-500
+                                           focus:ring-2
+                                           focus:ring-emerald-500/20
+                                           transition-all"
+                                >
+
+                                <span class="absolute right-4 top-1/2
+                                             -translate-y-1/2
+                                             text-xs text-slate-500">
+                                    %
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- OBSERVAÇÕES -->
+
+                    <div>
+
+                        <label
+                            for="c-obs"
+                            class="block text-xs font-semibold
+                                   text-slate-400 uppercase
+                                   tracking-wider mb-2"
+                        >
+                            Observações da semana
+                        </label>
+
+                        <div class="relative">
+
+                            <i class="fa-solid fa-message
+                                      absolute left-4 top-4
+                                      text-slate-500 text-sm"></i>
+
+                            <textarea
+                                id="c-obs"
+                                placeholder="Digite observações importantes sobre a semana do paciente..."
+                                class="w-full
+                                       bg-slate-900/90
+                                       border border-slate-700/80
+                                       p-3.5 pl-11
+                                       rounded-xl
+                                       text-sm text-white
+                                       placeholder-slate-500
+                                       h-32
+                                       resize-none
+                                       focus:outline-none
+                                       focus:border-emerald-500
+                                       focus:ring-2
+                                       focus:ring-emerald-500/20
+                                       transition-all"
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BOTÃO -->
+
+                    <button
+                        type="submit"
+                        class="w-full
+                               flex items-center
+                               justify-center gap-3
+                               bg-gradient-to-r
+                               from-emerald-600
+                               to-emerald-500
+                               hover:from-emerald-500
+                               hover:to-emerald-400
+                               text-white
+                               font-bold
+                               p-3.5
+                               rounded-xl
+                               transition-all
+                               shadow-lg
+                               shadow-emerald-600/20
+                               hover:shadow-emerald-500/30
+                               active:scale-[0.98]"
+                    >
+
+                        <i class="fa-solid fa-check"></i>
+
+                        <span>
+                            Registrar Check-in
+                        </span>
+
+                    </button>
+
+
+                    <!-- RODAPÉ -->
+
+                    <div class="flex items-center justify-center
+                                gap-2 pt-1">
+
+                        <i class="fa-solid fa-shield-halved
+                                  text-emerald-500/70 text-xs"></i>
+
+                        <span class="text-[11px] text-slate-500">
+                            Registro vinculado ao prontuário do paciente
+                        </span>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+          <div id="plano-resultado" class="space-y-4 text-slate-300">
+          <!-- Removido o <p> antigo -->
+          </div>
+<!-- ESTILO PARA OCULTAR BARRA DE ROLAGEM -->
+          <style>
+          .no-scrollbar::-webkit-scrollbar { display: none; }
+          .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+          </style>
+<!-- =========================================================SEÇÃO: PRONTUÁRIO DO PACIENTE========================================================= -->
+<section id="sec-prontuario" class="hidden space-y-6">
+
+    <!-- CABEÇALHO -->
+    <header class="bg-slate-800/40 backdrop-blur-xl
+                   p-5 md:p-6
+                   rounded-2xl
+                   border border-slate-700/60
+                   shadow-xl">
+
+        <div class="flex flex-col xl:flex-row
+                    xl:items-center
+                    xl:justify-between
+                    gap-5">
+
+            <div class="flex items-center gap-4">
+
+                <div class="w-12 h-12 md:w-14 md:h-14
+                            rounded-2xl
+                            bg-gradient-to-br
+                            from-emerald-500/20
+                            to-emerald-400/5
+                            border border-emerald-500/20
+                            flex items-center justify-center
+                            shrink-0">
+
+                    <i class="fa-solid fa-folder-open
+                              text-emerald-400
+                              text-xl"></i>
+
+                </div>
+
+                <div>
+
+                    <h2 class="text-2xl md:text-3xl
+                               font-extrabold
+                               text-white
+                               tracking-tight">
+
+                        Prontuário do Paciente
+
+                    </h2>
+
+                    <p class="text-sm text-slate-400 mt-1">
+
+                        Histórico clínico, avaliação e acompanhamento nutricional
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- SELEÇÃO DO PACIENTE -->
+
+            <div class="w-full xl:w-auto">
+
+                <div class="flex flex-col sm:flex-row
+                            gap-2">
+
+                    <div class="relative">
+
+                        <i class="fa-solid fa-user
+                                  absolute left-4 top-1/2
+                                  -translate-y-1/2
+                                  text-slate-500 text-sm"></i>
+
+                        <input
+                            type="number"
+                            id="prontuario-paciente-id"
+                            placeholder="ID do paciente"
+                            class="w-full sm:w-48
+                                   bg-slate-900/90
+                                   border border-slate-700/80
+                                   rounded-xl
+                                   px-4 py-3 pl-11
+                                   text-sm
+                                   text-white
+                                   placeholder-slate-500
+                                   focus:outline-none
+                                   focus:border-emerald-500
+                                   focus:ring-2
+                                   focus:ring-emerald-500/20
+                                   transition-all"
+                        >
+
+                    </div>
+
+                    <button
+                        onclick="carregarProntuarioCompleto()"
+                        class="flex items-center
+                               justify-center
+                               gap-2
+                               bg-gradient-to-r
+                               from-emerald-600
+                               to-emerald-500
+                               hover:from-emerald-500
+                               hover:to-emerald-400
+                               px-5 py-3
+                               rounded-xl
+                               text-sm
+                               font-bold
+                               text-white
+                               transition-all
+                               shadow-lg
+                               shadow-emerald-600/20
+                               active:scale-[0.98]"
+                    >
+
+                        <i class="fa-solid fa-folder-open"></i>
+
+                        Abrir Prontuário
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PACIENTE CARREGADO -->
+
+        <div
+            id="prontuario-cabecalho-paciente"
+            class="hidden mt-5
+                   bg-slate-900/60
+                   border border-slate-700/60
+                   rounded-xl
+                   px-4 py-3"
+        >
+
+            <div class="flex items-center gap-3">
+
+                <div class="w-9 h-9 rounded-xl
+                            bg-emerald-500/10
+                            border border-emerald-500/20
+                            flex items-center justify-center">
+
+                    <i class="fa-solid fa-user-check
+                              text-emerald-400
+                              text-sm"></i>
+
+                </div>
+
+                <div class="min-w-0">
+
+                    <p class="text-[10px]
+                              uppercase
+                              tracking-widest
+                              text-slate-500
+                              font-semibold">
+
+                        Paciente selecionado
+
+                    </p>
+
+                    <div class="text-sm text-slate-300 truncate">
+
+                        <span
+                            id="p-cab-nome"
+                            class="text-emerald-400
+                                   font-bold
+                                   text-base"
+                        ></span>
+
+                        <span class="text-slate-600 mx-2">•</span>
+
+                        <span id="p-cab-email"></span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         RESUMO / GRÁFICO DE EVOLUÇÃO
+         ===================================================== -->
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- CARD INFORMATIVO -->
+
+        <div class="bg-gradient-to-br
+                    from-emerald-600/15
+                    via-slate-800/80
+                    to-slate-900/90
+                    backdrop-blur-xl
+                    p-6
+                    rounded-2xl
+                    border border-emerald-500/20
+                    shadow-xl">
+
+            <div class="w-12 h-12
+                        rounded-2xl
+                        bg-emerald-500/10
+                        border border-emerald-500/20
+                        flex items-center justify-center
+                        mb-5">
+
+                <i class="fa-solid fa-chart-line
+                          text-emerald-400
+                          text-lg"></i>
+
+            </div>
+
+            <p class="text-xs
+                      uppercase
+                      tracking-widest
+                      text-slate-500
+                      font-semibold">
+
+                Acompanhamento
+
+            </p>
+
+            <h3 class="text-xl
+                       font-bold
+                       text-white
+                       mt-2">
+
+                Evolução corporal
+
+            </h3>
+
+            <p class="text-sm
+                      text-slate-400
+                      leading-6
+                      mt-3">
+
+                Visualize a evolução do peso e composição corporal
+                registrada durante o acompanhamento nutricional.
+
+            </p>
+
+            <div class="mt-6
+                        flex items-center
+                        gap-3">
+
+                <div class="w-10 h-10
+                            rounded-xl
+                            bg-blue-500/10
+                            flex items-center justify-center">
+
+                    <i class="fa-solid fa-weight-scale
+                              text-blue-400"></i>
+
+                </div>
+
+                <div>
+
+                    <p class="text-[10px]
+                              uppercase
+                              tracking-wider
+                              text-slate-500">
+
+                        Histórico
+
+                    </p>
+
+                    <p class="text-sm
+                              text-slate-300
+                              font-semibold">
+
+                        Peso e composição
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- GRÁFICO -->
+
+        <div class="lg:col-span-2
+                    bg-slate-800/70
+                    backdrop-blur-xl
+                    p-5 md:p-6
+                    rounded-2xl
+                    border border-slate-700/70
+                    shadow-xl">
+
+            <div class="flex items-center
+                        justify-between
+                        gap-4
+                        mb-5">
+
+                <div>
+
+                    <h3 class="text-lg
+                               font-bold
+                               text-white">
+
+                        Evolução do Peso e Composição Corporal
+
+                    </h3>
+
+                    <p class="text-xs
+                              text-slate-500
+                              mt-1">
+
+                        Histórico registrado no prontuário
+
+                    </p>
+
+                </div>
+
+                <div class="hidden sm:flex
+                            w-10 h-10
+                            rounded-xl
+                            bg-slate-900/70
+                            border border-slate-700
+                            items-center
+                            justify-center">
+
+                    <i class="fa-solid fa-chart-area
+                              text-emerald-400"></i>
+
+                </div>
+
+            </div>
+
+            <div class="relative
+                        w-full
+                        h-64">
+
+                <canvas id="graficoEvolucao"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         NAVEGAÇÃO DAS ABAS
+         ===================================================== -->
+
+    <div class="bg-slate-800/50
+                backdrop-blur-xl
+                p-2
+                rounded-2xl
+                border border-slate-700/60
+                shadow-xl">
+
+        <nav
+            class="flex
+                   flex-wrap
+                   gap-1.5"
+            id="nav-abas-prontuario"
+        >
+
+            <button
+                onclick="trocarAbaProntuario('perfil')"
+                id="tab-perfil"
+                class="aba-item
+                       px-3 py-2.5
+                       rounded-xl
+                       text-xs md:text-sm
+                       font-semibold
+                       bg-emerald-600
+                       text-white
+                       transition-all
+                       flex items-center gap-2"
+            >
+
+                <i class="fa-solid fa-user"></i>
+
+                Perfil
+
+            </button>
+
+
+            <button
+                onclick="trocarAbaProntuario('anamnese')"
+                id="tab-anamnese"
+                class="aba-item
+                       px-3 py-2.5
+                       rounded-xl
+                       text-xs md:text-sm
+                       font-semibold
+                       bg-slate-800
+                       text-slate-400
+                       hover:text-white
+                       hover:bg-slate-700
+                       transition-all
+                       flex items-center gap-2"
+            >
+
+                <i class="fa-solid fa-notes-medical"></i>
+
+                Anamnese
+
+            </button>
+
+
+            <button
+                onclick="trocarAbaProntuario('alimentacao')"
+                id="tab-alimentacao"
+                class="aba-item
+                       px-3 py-2.5
+                       rounded-xl
+                       text-xs md:text-sm
+                       font-semibold
+                       bg-slate-800
+                       text-slate-400
+                       hover:text-white
+                       hover:bg-slate-700
+                       transition-all
+                       flex items-center gap-2"
+            >
+
+                <i class="fa-solid fa-utensils"></i>
+
+                Alimentação
+
+            </button>
+
+
+            <button
+                onclick="trocarAbaProntuario('avaliacao')"
+                id="tab-avaliacao"
+                class="aba-item
+                       px-3 py-2.5
+                       rounded-xl
+                       text-xs md:text-sm
+                       font-semibold
+                       bg-slate-800
+                       text-slate-400
+                       hover:text-white
+                       hover:bg-slate-700
+                       transition-all
+                       flex items-center gap-2"
+            >
+
+                <i class="fa-solid fa-ruler-combined"></i>
+
+                Avaliação
+
+            </button>
+
+
+            <button
+                onclick="trocarAbaProntuario('exames')"
+                id="tab-exames"
+                class="aba-item
+                       px-3 py-2.5
+                       rounded-xl
+                       text-xs md:text-sm
+                       font-semibold
+                       bg-slate-800
+                       text-slate-400
+                       hover:text-white
+                       hover:bg-slate-700
+                       transition-all
+                       flex items-center gap-2"
+            >
+
+                <i class="fa-solid fa-flask"></i>
+
+                Exames
+
+            </button>
+
+
+            <button
+                onclick="trocarAbaProntuario('consultas')"
+                id="tab-consultas"
+                class="aba-item
+                       px-3 py-2.5
+                       rounded-xl
+                       text-xs md:text-sm
+                       font-semibold
+                       bg-slate-800
+                       text-slate-400
+                       hover:text-white
+                       hover:bg-slate-700
+                       transition-all
+                       flex items-center gap-2"
+            >
+
+                <i class="fa-solid fa-calendar-check"></i>
+
+                Consultas
+
+            </button>
+
+
+            <button
+                onclick="trocarAbaProntuario('planos')"
+                id="tab-planos"
+                class="aba-item
+                       px-3 py-2.5
+                       rounded-xl
+                       text-xs md:text-sm
+                       font-semibold
+                       bg-slate-800
+                       text-slate-400
+                       hover:text-white
+                       hover:bg-slate-700
+                       transition-all
+                       flex items-center gap-2"
+            >
+
+                <i class="fa-solid fa-bowl-food"></i>
+
+                Planos
+
+            </button>
+
+
+            <button
+                onclick="trocarAbaProntuario('orientacoes')"
+                id="tab-orientacoes"
+                class="aba-item
+                       px-3 py-2.5
+                       rounded-xl
+                       text-xs md:text-sm
+                       font-semibold
+                       bg-slate-800
+                       text-slate-400
+                       hover:text-white
+                       hover:bg-slate-700
+                       transition-all
+                       flex items-center gap-2"
+            >
+
+                <i class="fa-solid fa-lightbulb"></i>
+
+                Orientações
+
+            </button>
+
+
+            <button
+                onclick="trocarAbaProntuario('metas')"
+                id="tab-metas"
+                class="aba-item
+                       px-3 py-2.5
+                       rounded-xl
+                       text-xs md:text-sm
+                       font-semibold
+                       bg-slate-800
+                       text-slate-400
+                       hover:text-white
+                       hover:bg-slate-700
+                       transition-all
+                       flex items-center gap-2"
+            >
+
+                <i class="fa-solid fa-bullseye"></i>
+
+                Metas
+
+            </button>
+
+
+            <button
+                onclick="trocarAbaProntuario('documentos')"
+                id="tab-documentos"
+                class="aba-item
+                       px-3 py-2.5
+                       rounded-xl
+                       text-xs md:text-sm
+                       font-semibold
+                       bg-slate-800
+                       text-slate-400
+                       hover:text-white
+                       hover:bg-slate-700
+                       transition-all
+                       flex items-center gap-2"
+            >
+
+                <i class="fa-solid fa-file-lines"></i>
+
+                Documentos
+
+            </button>
+
+        </nav>
+
+    </div>
+
+
+    <!-- =====================================================
+         CONTEÚDO DAS ABAS
+         ===================================================== -->
+
+    <div class="bg-slate-800/70
+                backdrop-blur-xl
+                p-5 md:p-7
+                rounded-2xl
+                border border-slate-700/70
+                shadow-xl
+                min-h-[420px]">
+
+
+        <!-- =================================================
+             1. PERFIL
+             ================================================= -->
+
+        <div
+            id="sub-perfil"
+            class="aba-conteudo space-y-5"
+        >
+
+            <div class="flex items-center gap-3">
+
+                <div class="w-10 h-10
+                            rounded-xl
+                            bg-emerald-500/10
+                            border border-emerald-500/20
+                            flex items-center justify-center">
+
+                    <i class="fa-solid fa-user
+                              text-emerald-400"></i>
+
+                </div>
+
+                <div>
+
+                    <h3 class="text-lg
+                               font-bold
+                               text-white">
+
+                        Dados do Perfil
+
+                    </h3>
+
+                    <p class="text-xs
+                              text-slate-500
+                              mt-1">
+
+                        Informações cadastrais do paciente
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div
+                id="conteudo-perfil"
+                class="grid grid-cols-1
+                       md:grid-cols-2
+                       gap-4
+                       text-slate-300
+                       text-sm"
+            >
+
+                <p class="text-slate-400">
+
+                    Digite o ID do paciente e clique em
+                    "Abrir Prontuário".
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             2. ANAMNESE
+             ================================================= -->
+
+        <div
+            id="sub-anamnese"
+            class="aba-conteudo hidden space-y-5"
+        >
+
+            <div class="flex items-center gap-3">
+
+                <div class="w-10 h-10
+                            rounded-xl
+                            bg-purple-500/10
+                            flex items-center justify-center">
+
+                    <i class="fa-solid fa-notes-medical
+                              text-purple-400"></i>
+
+                </div>
+
+                <div>
+
+                    <h3 class="text-lg
+                               font-bold
+                               text-white">
+
+                        Anamnese Clínica
+
+                    </h3>
+
+                    <p class="text-xs
+                              text-slate-500
+                              mt-1">
+
+                        Histórico e informações clínicas relevantes
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="grid
+                        grid-cols-1
+                        md:grid-cols-2
+                        gap-5">
+
+                <div>
+
+                    <label class="block
+                                  text-xs
+                                  font-semibold
+                                  text-slate-400
+                                  uppercase
+                                  tracking-wider
+                                  mb-2">
+
+                        Histórico Médico
+
+                    </label>
+
+                    <textarea
+                        id="p-an-historico"
+                        rows="4"
+                        placeholder="Descreva o histórico médico..."
+                        class="w-full
+                               bg-slate-900/90
+                               border border-slate-700/80
+                               rounded-xl
+                               p-3.5
+                               text-sm
+                               text-white
+                               placeholder-slate-600
+                               resize-none
+                               focus:outline-none
+                               focus:border-emerald-500
+                               focus:ring-2
+                               focus:ring-emerald-500/20
+                               transition-all"
+                    ></textarea>
+
+                </div>
+
+
+                <div>
+
+                    <label class="block
+                                  text-xs
+                                  font-semibold
+                                  text-slate-400
+                                  uppercase
+                                  tracking-wider
+                                  mb-2">
+
+                        Alergias Alimentares
+
+                    </label>
+
+                    <textarea
+                        id="p-an-alergias"
+                        rows="4"
+                        placeholder="Registre alergias alimentares..."
+                        class="w-full
+                               bg-slate-900/90
+                               border border-slate-700/80
+                               rounded-xl
+                               p-3.5
+                               text-sm
+                               text-white
+                               placeholder-slate-600
+                               resize-none
+                               focus:outline-none
+                               focus:border-emerald-500
+                               focus:ring-2
+                               focus:ring-emerald-500/20
+                               transition-all"
+                    ></textarea>
+
+                </div>
+
+
+                <div>
+
+                    <label class="block
+                                  text-xs
+                                  font-semibold
+                                  text-slate-400
+                                  uppercase
+                                  tracking-wider
+                                  mb-2">
+
+                        Intolerâncias
+
+                    </label>
+
+                    <textarea
+                        id="p-an-intolerancias"
+                        rows="4"
+                        placeholder="Registre intolerâncias..."
+                        class="w-full
+                               bg-slate-900/90
+                               border border-slate-700/80
+                               rounded-xl
+                               p-3.5
+                               text-sm
+                               text-white
+                               placeholder-slate-600
+                               resize-none
+                               focus:outline-none
+                               focus:border-emerald-500
+                               focus:ring-2
+                               focus:ring-emerald-500/20
+                               transition-all"
+                    ></textarea>
+
+                </div>
+
+
+                <div>
+
+                    <label class="block
+                                  text-xs
+                                  font-semibold
+                                  text-slate-400
+                                  uppercase
+                                  tracking-wider
+                                  mb-2">
+
+                        Rotina Diária & Hábitos
+
+                    </label>
+
+                    <textarea
+                        id="p-an-rotina"
+                        rows="4"
+                        placeholder="Descreva rotina, horários e hábitos..."
+                        class="w-full
+                               bg-slate-900/90
+                               border border-slate-700/80
+                               rounded-xl
+                               p-3.5
+                               text-sm
+                               text-white
+                               placeholder-slate-600
+                               resize-none
+                               focus:outline-none
+                               focus:border-emerald-500
+                               focus:ring-2
+                               focus:ring-emerald-500/20
+                               transition-all"
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+            <div class="flex justify-end">
+
+                <button
+                    onclick="salvarAnamneseProntuario()"
+                    class="flex items-center
+                           gap-2
+                           bg-gradient-to-r
+                           from-emerald-600
+                           to-emerald-500
+                           hover:from-emerald-500
+                           hover:to-emerald-400
+                           px-5 py-3
+                           rounded-xl
+                           text-sm
+                           font-bold
+                           text-white
+                           transition-all
+                           shadow-lg
+                           shadow-emerald-600/20"
+                >
+
+                    <i class="fa-solid fa-floppy-disk"></i>
+
+                    Salvar Anamnese
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             3. ALIMENTAÇÃO
+             ================================================= -->
+
+        <div
+            id="sub-alimentacao"
+            class="aba-conteudo hidden space-y-5"
+        >
+
+            <div class="flex items-center gap-3">
+
+                <div class="w-10 h-10
+                            rounded-xl
+                            bg-orange-500/10
+                            flex items-center justify-center">
+
+                    <i class="fa-solid fa-utensils
+                              text-orange-400"></i>
+
+                </div>
+
+                <div>
+
+                    <h3 class="text-lg
+                               font-bold
+                               text-white">
+
+                        Hábitos Alimentares & Recordatório
+
+                    </h3>
+
+                    <p class="text-xs
+                              text-slate-500
+                              mt-1">
+
+                        Preferências, aversões e hábitos alimentares
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <textarea
+                id="p-habitos-alimentares"
+                rows="7"
+                placeholder="Aversões alimentares, preferências, quantidade de água consumida diariamente..."
+                class="w-full
+                       bg-slate-900/90
+                       border border-slate-700/80
+                       rounded-xl
+                       p-4
+                       text-sm
+                       text-white
+                       placeholder-slate-600
+                       resize-none
+                       focus:outline-none
+                       focus:border-emerald-500
+                       focus:ring-2
+                       focus:ring-emerald-500/20
+                       transition-all"
+            ></textarea>
+
+
+            <div class="flex justify-end">
+
+                <button
+                    class="flex items-center
+                           gap-2
+                           bg-emerald-600
+                           hover:bg-emerald-500
+                           px-5 py-3
+                           rounded-xl
+                           text-sm
+                           font-bold
+                           text-white
+                           transition-all"
+                >
+
+                    <i class="fa-solid fa-floppy-disk"></i>
+
+                    Salvar Hábitos
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             4. AVALIAÇÃO
+             ================================================= -->
+
+        <div
+            id="sub-avaliacao"
+            class="aba-conteudo hidden space-y-5"
+        >
+
+            <div class="flex items-center gap-3">
+
+                <div class="w-10 h-10
+                            rounded-xl
+                            bg-blue-500/10
+                            flex items-center justify-center">
+
+                    <i class="fa-solid fa-ruler-combined
+                              text-blue-400"></i>
+
+                </div>
+
+                <div>
+
+                    <h3 class="text-lg
+                               font-bold
+                               text-white">
+
+                        Avaliação Antropométrica & Métricas
+
+                    </h3>
+
+                    <p class="text-xs
+                              text-slate-500
+                              mt-1">
+
+                        Histórico de avaliações físicas e metas calculadas
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="conteudo-avaliacao"
+                class="text-slate-300 text-sm"
+            >
+
+                <div class="bg-slate-900/70
+                            border border-slate-700/70
+                            rounded-xl
+                            p-5">
+
+                    <p class="text-slate-400">
+
+                        Consulte o histórico de avaliações físicas
+                        e metas calculadas do paciente.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             5. EXAMES
+             ================================================= -->
+
+        <div
+            id="sub-exames"
+            class="aba-conteudo hidden space-y-5"
+        >
+
+            <div class="flex items-center gap-3">
+
+                <div class="w-10 h-10
+                            rounded-xl
+                            bg-red-500/10
+                            flex items-center justify-center">
+
+                    <i class="fa-solid fa-flask
+                              text-red-400"></i>
+
+                </div>
+
+                <div>
+
+                    <h3 class="text-lg
+                               font-bold
+                               text-white">
+
+                        Exames Laboratoriais & Marcadores
+
+                    </h3>
+
+                    <p class="text-xs
+                              text-slate-500
+                              mt-1">
+
+                        Registro de exames bioquímicos
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <p class="text-sm text-slate-400">
+
+                Registo de exames bioquímicos
+                (Glicemia, Colesterol, Triglicéridos, Vitamina D, etc.).
+
+            </p>
+
+
+            <div class="bg-slate-900/70
+                        p-5
+                        rounded-xl
+                        border border-slate-700/70">
+
+                <div class="flex items-center gap-3">
+
+                    <div class="w-10 h-10
+                                rounded-xl
+                                bg-slate-800
+                                flex items-center justify-center">
+
+                        <i class="fa-solid fa-file-circle-xmark
+                                  text-slate-500"></i>
+
+                    </div>
+
+                    <div>
+
+                        <p class="text-sm
+                                  font-semibold
+                                  text-slate-300">
+
+                            Nenhum exame anexado recentemente.
+
+                        </p>
+
+                        <p class="text-xs
+                                  text-slate-500
+                                  mt-1">
+
+                            Os exames registrados aparecerão nesta área.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             6. CONSULTAS
+             ================================================= -->
+
+        <div
+            id="sub-consultas"
+            class="aba-conteudo hidden space-y-5"
+        >
+
+            <div class="flex items-center gap-3">
+
+                <div class="w-10 h-10
+                            rounded-xl
+                            bg-cyan-500/10
+                            flex items-center justify-center">
+
+                    <i class="fa-solid fa-calendar-check
+                              text-cyan-400"></i>
+
+                </div>
+
+                <div>
+
+                    <h3 class="text-lg
+                               font-bold
+                               text-white">
+
+                        Histórico de Consultas & Evolução
+
+                    </h3>
+
+                    <p class="text-xs
+                              text-slate-500
+                              mt-1">
+
+                        Registro das consultas presenciais e online
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="bg-slate-900/70
+                        border border-slate-700/70
+                        rounded-xl
+                        p-5">
+
+                <p class="text-sm
+                          text-slate-400">
+
+                    Notas das consultas presenciais e online.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             7. PLANOS ALIMENTARES
+             ================================================= -->
+
+        <div
+            id="sub-planos"
+            class="aba-conteudo hidden space-y-6"
+        >
+
+            <!-- CABEÇALHO DO PLANO -->
+
+            <div class="flex flex-col
+                        sm:flex-row
+                        sm:items-center
+                        sm:justify-between
+                        gap-4">
+
+                <div>
+
+                    <div class="flex items-center gap-3">
+
+                        <div class="w-10 h-10
+                                    rounded-xl
+                                    bg-emerald-500/10
+                                    flex items-center justify-center">
+
+                            <i class="fa-solid fa-bowl-food
+                                      text-emerald-400"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h3 class="text-lg
+                                       font-bold
+                                       text-white">
+
+                                Plano Alimentar e Prescrição
+
+                            </h3>
+
+                            <p class="text-xs
+                                      text-slate-500
+                                      mt-1">
+
+                                Monte e acompanhe o plano alimentar do paciente
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    onclick="gerarPDFPlanoAlimentar()"
+                    class="flex items-center
+                           justify-center
+                           gap-2
+                           bg-blue-600
+                           hover:bg-blue-500
+                           px-5 py-3
+                           rounded-xl
+                           text-sm
+                           font-bold
+                           text-white
+                           transition-all
+                           shadow-lg
+                           shadow-blue-600/20"
+                >
+
+                    <i class="fa-solid fa-file-pdf"></i>
+
+                    Gerar plano em PDF
+
+                </button>
+
+            </div>
+
+
+            <!-- FORMULÁRIO -->
+
+            <div class="bg-slate-900/70
+                        p-5
+                        rounded-2xl
+                        border border-slate-700/70
+                        shadow-lg">
+
+                <div class="flex items-center gap-3 mb-5">
+
+                    <div class="w-9 h-9
+                                rounded-xl
+                                bg-blue-500/10
+                                flex items-center justify-center">
+
+                        <i class="fa-solid fa-plus
+                                  text-blue-400"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4 class="text-sm
+                                   font-bold
+                                   text-white">
+
+                            Adicionar Alimento ao Plano
+
+                        </h4>
+
+                        <p class="text-xs
+                                  text-slate-500
+                                  mt-1">
+
+                            Preencha os dados nutricionais do alimento
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <form
+                    id="form-adicionar-item"
+                    onsubmit="adicionarItemAutomatico(event)"
+                    class="space-y-5"
+                >
+
+                    <!-- REFEIÇÃO / HORÁRIO -->
+
+                    <div class="grid
+                                grid-cols-1
+                                md:grid-cols-2
+                                gap-4">
+
+                        <div>
+
+                            <label class="block
+                                          text-xs
+                                          font-semibold
+                                          text-slate-400
+                                          uppercase
+                                          tracking-wider
+                                          mb-2">
+
+                                Refeição
+
+                            </label>
+
+                            <input
+                                type="text"
+                                id="item-refeicao"
+                                placeholder="Ex: Café da Manhã"
+                                required
+                                class="w-full
+                                       bg-slate-800/90
+                                       border border-slate-700/80
+                                       p-3
+                                       rounded-xl
+                                       text-sm
+                                       text-white
+                                       placeholder-slate-600
+                                       focus:outline-none
+                                       focus:border-emerald-500
+                                       focus:ring-2
+                                       focus:ring-emerald-500/20
+                                       transition-all"
+                            >
+
+                        </div>
+
+
+                        <div>
+
+                            <label class="block
+                                          text-xs
+                                          font-semibold
+                                          text-slate-400
+                                          uppercase
+                                          tracking-wider
+                                          mb-2">
+
+                                Horário
+
+                            </label>
+
+                            <input
+                                type="text"
+                                id="item-horario"
+                                placeholder="Ex: 08:00"
+                                class="w-full
+                                       bg-slate-800/90
+                                       border border-slate-700/80
+                                       p-3
+                                       rounded-xl
+                                       text-sm
+                                       text-white
+                                       placeholder-slate-600
+                                       focus:outline-none
+                                       focus:border-emerald-500
+                                       focus:ring-2
+                                       focus:ring-emerald-500/20
+                                       transition-all"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ALIMENTO -->
+
+                    <div>
+
+                        <label class="block
+                                      text-xs
+                                      font-semibold
+                                      text-slate-400
+                                      uppercase
+                                      tracking-wider
+                                      mb-2">
+
+                            Alimento
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="item-alimento-livre"
+                            placeholder="Ex: Ovos mexidos com pão integral"
+                            required
+                            class="w-full
+                                   bg-slate-800/90
+                                   border border-slate-700/80
+                                   p-3
+                                   rounded-xl
+                                   text-sm
+                                   text-white
+                                   placeholder-slate-600
+                                   focus:outline-none
+                                   focus:border-emerald-500
+                                   focus:ring-2
+                                   focus:ring-emerald-500/20
+                                   transition-all"
+                        >
+
+                    </div>
+
+
+                    <!-- QUANTIDADE / MEDIDA -->
+
+                    <div class="grid
+                                grid-cols-1
+                                md:grid-cols-2
+                                gap-4">
+
+                        <div>
+
+                            <label class="block
+                                          text-xs
+                                          font-semibold
+                                          text-slate-400
+                                          uppercase
+                                          tracking-wider
+                                          mb-2">
+
+                                Quantidade (g/ml)
+
+                            </label>
+
+                            <input
+                                type="number"
+                                id="item-qtd"
+                                placeholder="150"
+                                class="w-full
+                                       bg-slate-800/90
+                                       border border-slate-700/80
+                                       p-3
+                                       rounded-xl
+                                       text-sm
+                                       text-white
+                                       placeholder-slate-600
+                                       focus:outline-none
+                                       focus:border-emerald-500
+                                       focus:ring-2
+                                       focus:ring-emerald-500/20
+                                       transition-all"
+                            >
+
+                        </div>
+
+
+                        <div>
+
+                            <label class="block
+                                          text-xs
+                                          font-semibold
+                                          text-slate-400
+                                          uppercase
+                                          tracking-wider
+                                          mb-2">
+
+                                Medida Caseira
+
+                            </label>
+
+                            <input
+                                type="text"
+                                id="item-medida"
+                                placeholder="Ex: 2 fatias"
+                                class="w-full
+                                       bg-slate-800/90
+                                       border border-slate-700/80
+                                       p-3
+                                       rounded-xl
+                                       text-sm
+                                       text-white
+                                       placeholder-slate-600
+                                       focus:outline-none
+                                       focus:border-emerald-500
+                                       focus:ring-2
+                                       focus:ring-emerald-500/20
+                                       transition-all"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- MACROS -->
+
+                    <div>
+
+                        <p class="text-xs
+                                  font-semibold
+                                  text-slate-400
+                                  uppercase
+                                  tracking-wider
+                                  mb-3">
+
+                            Informações nutricionais
+
+                        </p>
+
+                        <div class="grid
+                                    grid-cols-2
+                                    md:grid-cols-4
+                                    gap-3">
+
+                            <div>
+
+                                <label class="block
+                                              text-[11px]
+                                              text-slate-500
+                                              mb-1.5">
+
+                                    Kcal
+
+                                </label>
+
+                                <input
+                                    type="number"
+                                    step="0.1"
+                                    id="item-kcal"
+                                    placeholder="250"
+                                    required
+                                    class="w-full
+                                           bg-slate-800/90
+                                           border border-slate-700/80
+                                           p-3
+                                           rounded-xl
+                                           text-sm
+                                           text-white
+                                           placeholder-slate-600
+                                           focus:outline-none
+                                           focus:border-emerald-500
+                                           focus:ring-2
+                                           focus:ring-emerald-500/20"
+                                >
+
+                            </div>
+
+
+                            <div>
+
+                                <label class="block
+                                              text-[11px]
+                                              text-slate-500
+                                              mb-1.5">
+
+                                    Proteínas (g)
+
+                                </label>
+
+                                <input
+                                    type="number"
+                                    step="0.1"
+                                    id="item-prot"
+                                    placeholder="15"
+                                    class="w-full
+                                           bg-slate-800/90
+                                           border border-slate-700/80
+                                           p-3
+                                           rounded-xl
+                                           text-sm
+                                           text-white
+                                           placeholder-slate-600
+                                           focus:outline-none
+                                           focus:border-emerald-500
+                                           focus:ring-2
+                                           focus:ring-emerald-500/20"
+                                >
+
+                            </div>
+
+
+                            <div>
+
+                                <label class="block
+                                              text-[11px]
+                                              text-slate-500
+                                              mb-1.5">
+
+                                    Carboidratos (g)
+
+                                </label>
+
+                                <input
+                                    type="number"
+                                    step="0.1"
+                                    id="item-carbo"
+                                    placeholder="20"
+                                    class="w-full
+                                           bg-slate-800/90
+                                           border border-slate-700/80
+                                           p-3
+                                           rounded-xl
+                                           text-sm
+                                           text-white
+                                           placeholder-slate-600
+                                           focus:outline-none
+                                           focus:border-emerald-500
+                                           focus:ring-2
+                                           focus:ring-emerald-500/20"
+                                >
+
+                            </div>
+
+
+                            <div>
+
+                                <label class="block
+                                              text-[11px]
+                                              text-slate-500
+                                              mb-1.5">
+
+                                    Gorduras (g)
+
+                                </label>
+
+                                <input
+                                    type="number"
+                                    step="0.1"
+                                    id="item-gordura"
+                                    placeholder="10"
+                                    class="w-full
+                                           bg-slate-800/90
+                                           border border-slate-700/80
+                                           p-3
+                                           rounded-xl
+                                           text-sm
+                                           text-white
+                                           placeholder-slate-600
+                                           focus:outline-none
+                                           focus:border-emerald-500
+                                           focus:ring-2
+                                           focus:ring-emerald-500/20"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="w-full
+                               flex items-center
+                               justify-center
+                               gap-2
+                               bg-gradient-to-r
+                               from-emerald-600
+                               to-emerald-500
+                               hover:from-emerald-500
+                               hover:to-emerald-400
+                               text-white
+                               font-bold
+                               py-3.5
+                               rounded-xl
+                               transition-all
+                               shadow-lg
+                               shadow-emerald-600/20
+                               active:scale-[0.99]"
+                    >
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Adicionar e Salvar Automaticamente
+
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- LISTAGEM -->
+
+            <div>
+
+                <div class="flex items-center gap-3 mb-4">
+
+                    <div class="w-9 h-9
+                                rounded-xl
+                                bg-slate-700/50
+                                flex items-center justify-center">
+
+                        <i class="fa-solid fa-list
+                                  text-slate-300"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4 class="text-sm
+                                   font-bold
+                                   text-white">
+
+                            Plano atual
+
+                        </h4>
+
+                        <p class="text-xs
+                                  text-slate-500">
+
+                            Alimentos registrados para este paciente
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="prontuario-plano-resultado"
+                    class="space-y-4
+                           text-slate-300"
+                >
+
+                    <div class="bg-slate-900/50
+                                border border-slate-700/60
+                                rounded-xl
+                                p-5">
+
+                        <p class="text-sm
+                                  text-slate-400">
+
+                            Nenhum alimento registrado para este paciente.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             8. ORIENTAÇÕES
+             ================================================= -->
+
+        <div
+            id="sub-orientacoes"
+            class="aba-conteudo hidden space-y-5"
+        >
+
+            <div class="flex items-center gap-3">
+
+                <div class="w-10 h-10
+                            rounded-xl
+                            bg-amber-500/10
+                            flex items-center justify-center">
+
+                    <i class="fa-solid fa-lightbulb
+                              text-amber-400"></i>
+
+                </div>
+
+                <div>
+
+                    <h3 class="text-lg
+                               font-bold
+                               text-white">
+
+                        Orientações Nutricionais & Recomendações
+
+                    </h3>
+
+                    <p class="text-xs
+                              text-slate-500
+                              mt-1">
+
+                        Recomendações personalizadas para o paciente
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <textarea
+                id="input-orientacoes"
+                rows="7"
+                placeholder="Orientações de hidratação, mastigação, lista de compras e suplementação prescrita..."
+                class="w-full
+                       bg-slate-900/90
+                       border border-slate-700/80
+                       rounded-xl
+                       p-4
+                       text-sm
+                       text-white
+                       placeholder-slate-600
+                       resize-none
+                       focus:outline-none
+                       focus:border-emerald-500
+                       focus:ring-2
+                       focus:ring-emerald-500/20
+                       transition-all"
+            ></textarea>
+
+
+            <div class="flex justify-end">
+
+                <button
+                    onclick="salvarOrientacoes(document.getElementById('prontuario-paciente-id').value)"
+                    class="flex items-center
+                           gap-2
+                           bg-gradient-to-r
+                           from-emerald-600
+                           to-emerald-500
+                           hover:from-emerald-500
+                           hover:to-emerald-400
+                           px-5 py-3
+                           rounded-xl
+                           text-sm
+                           font-bold
+                           text-white
+                           transition-all
+                           shadow-lg
+                           shadow-emerald-600/20"
+                >
+
+                    <i class="fa-solid fa-floppy-disk"></i>
+
+                    Salvar Orientações
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             9. METAS
+             ================================================= -->
+
+        <div
+            id="sub-metas"
+            class="aba-conteudo hidden space-y-5"
+        >
+
+            <div class="flex items-center gap-3">
+
+                <div class="w-10 h-10
+                            rounded-xl
+                            bg-emerald-500/10
+                            flex items-center justify-center">
+
+                    <i class="fa-solid fa-bullseye
+                              text-emerald-400"></i>
+
+                </div>
+
+                <div>
+
+                    <h3 class="text-lg
+                               font-bold
+                               text-white">
+
+                        Metas do Paciente
+
+                    </h3>
+
+                    <p class="text-xs
+                              text-slate-500
+                              mt-1">
+
+                        Objetivos definidos para o acompanhamento
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="grid
+                        grid-cols-1
+                        md:grid-cols-3
+                        gap-4">
+
+
+                <!-- CALORIAS -->
+
+                <div class="bg-gradient-to-br
+                            from-emerald-500/10
+                            to-slate-900/60
+                            p-5
+                            rounded-2xl
+                            border border-emerald-500/20">
+
+                    <div class="w-10 h-10
+                                rounded-xl
+                                bg-emerald-500/10
+                                flex items-center justify-center
+                                mb-4">
+
+                        <i class="fa-solid fa-fire
+                                  text-emerald-400"></i>
+
+                    </div>
+
+                    <span class="text-xs
+                                 text-slate-500
+                                 uppercase
+                                 tracking-wider">
+
+                        Meta Calórica
+
+                    </span>
+
+                    <p
+                        id="m-calorica"
+                        class="text-xl
+                               font-extrabold
+                               text-emerald-400
+                               mt-2"
+                    >
+
+                        2000 kcal/dia
+
+                    </p>
+
+                </div>
+
+
+                <!-- ÁGUA -->
+
+                <div class="bg-gradient-to-br
+                            from-blue-500/10
+                            to-slate-900/60
+                            p-5
+                            rounded-2xl
+                            border border-blue-500/20">
+
+                    <div class="w-10 h-10
+                                rounded-xl
+                                bg-blue-500/10
+                                flex items-center justify-center
+                                mb-4">
+
+                        <i class="fa-solid fa-droplet
+                                  text-blue-400"></i>
+
+                    </div>
+
+                    <span class="text-xs
+                                 text-slate-500
+                                 uppercase
+                                 tracking-wider">
+
+                        Consumo de Água
+
+                    </span>
+
+                    <p
+                        id="m-agua"
+                        class="text-xl
+                               font-extrabold
+                               text-blue-400
+                               mt-2"
+                    >
+
+                        2.5 Litros/dia
+
+                    </p>
+
+                </div>
+
+
+                <!-- PESO -->
+
+                <div class="bg-gradient-to-br
+                            from-purple-500/10
+                            to-slate-900/60
+                            p-5
+                            rounded-2xl
+                            border border-purple-500/20">
+
+                    <div class="w-10 h-10
+                                rounded-xl
+                                bg-purple-500/10
+                                flex items-center justify-center
+                                mb-4">
+
+                        <i class="fa-solid fa-weight-scale
+                                  text-purple-400"></i>
+
+                    </div>
+
+                    <span class="text-xs
+                                 text-slate-500
+                                 uppercase
+                                 tracking-wider">
+
+                        Meta de Peso
+
+                    </span>
+
+                    <p
+                        id="m-peso"
+                        class="text-xl
+                               font-extrabold
+                               text-purple-400
+                               mt-2"
+                    >
+
+                        75 kg
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             10. DOCUMENTO================================================= -->
+
+        <div
+            id="sub-documentos"
+            class="aba-conteudo hidden space-y-5"
+        >
+
+            <div class="flex items-center gap-3">
+
+                <div class="w-10 h-10
+                            rounded-xl
+                            bg-indigo-500/10
+                            flex items-center justify-center">
+
+                    <i class="fa-solid fa-file-lines
+                              text-indigo-400"></i>
+
+                </div>
+
+                <div>
+
+                    <h3 class="text-lg
+                               font-bold
+                               text-white">
+
+                        Documentos & Anexos
+
+                    </h3>
+
+                    <p class="text-xs
+                              text-slate-500
+                              mt-1">
+
+                        Arquivos relacionados ao acompanhamento
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="bg-slate-900/70
+                        border border-dashed
+                        border-slate-700
+                        rounded-2xl
+                        p-8
+                        text-center">
+
+                <div class="w-14 h-14
+                            rounded-2xl
+                            bg-indigo-500/10
+                            mx-auto
+                            flex items-center
+                            justify-center
+                            mb-4">
+
+                    <i class="fa-solid fa-folder-open
+                              text-indigo-400
+                              text-xl"></i>
+
+                </div>
+
+                <h4 class="text-sm
+                           font-bold
+                           text-slate-300">
+
+                    Nenhum documento anexado
+
+                </h4>
+
+                <p class="text-xs
+                          text-slate-500
+                          mt-2
+                          max-w-md
+                          mx-auto">
+
+                    Ficheiros em PDF, relatórios e fotos de evolução
+                    poderão aparecer nesta área.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!--TEMPLATE OCULTO EXCLUSIVO PARA O PDF PROFISSIONAL -->
+  <div id="pdf-template-container" style="display: none;">
+    <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 40px; color: #1e293b; background: #ffffff; max-width: 800px; margin: 0 auto;">
+        <!-- Cabeçalho Institucional -->
+          <div style="border-bottom: 2px solid #10b981; padding-bottom: 20px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center;">              <div>
+            <h1 style="color: #047857; margin: 0; font-size: 26px; font-weight: bold;">ACNUT</h1>
+              <p style="margin: 4px 0 0 0; color: #64748b; font-size: 13px;">Sistema Clínico de Nutrição e Dietética Avançada</p>
+                </div>
+                  <div style="text-align: right; font-size: 12px; color: #64748b;">
+                    <p style="margin: 0;" id="pdf-data-emissao">Data: --/--/----</p>
+                      </div>
+                        </div>
+                          <!-- Informações do Paciente -->
+                            <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px 20px; border-radius: 8px; margin-bottom: 25px;">
+                              <h3 style="margin: 0 0 8px 0; font-size: 15px; color: #0f172a; text-transform: uppercase; letter-spacing: 0.5px;">Identificação do Paciente</h3>
+                                <p style="margin: 4px 0; font-size: 14px;"><strong>Nome:</strong> <span id="pdf-paciente-nome">--</span></p>
+                                  <p style="margin: 4px 0; font-size: 14px;"><strong>E-mail:</strong> <span id="pdf-paciente-email">--</span></p>
+                                    </div>
+                                      <!-- Secção do Plano Alimentar -->
+                                        <h3 style="font-size: 16px; color: #0f172a; margin-bottom: 15px; border-left: 4px solid #10b981; padding-left: 8px;">Prescrição do Plano Alimentar</h3>
+                                          <div id="pdf-conteudo-refeicoes" style="margin-bottom: 30px;">
+                                            <!-- As refeições injetadas dinamicamente via JS vão aparecer aqui -->
+                                              </div>
+                                                <div style="margin-top: 25px; margin-bottom: 30px;">
+                                                  <h3 style="font-size: 16px; color: #0f172a; margin-bottom: 10px; border-left: 4px solid #10b981; padding-left: 8px;">Orientações Nutricionais & Recomendações</h3>
+                                                    <p id="pdf-texto-orientacoes" style="font-size: 13px; color: #334155; line-height: 1.5; background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 6px; white-space: pre-wrap;">--</p>
+                                                      </div>
+                                                       <!-- Rodapé Formal -->
+                                                        <div style="margin-top: 50px; border-top: 1px solid #cbd5e1; padding-top: 15px; text-align: center; font-size: 11px; color: #94a3b8;">
+                                                          <p style="margin: 0;">ACNUT • Documento clínico confidencial gerado por microserviços.</p>
+                                                            </div>
+                                                              </div>
+                                                                </div>
+</main>
+    <script>
+  function fazerLogin(event) {
+
+    event.preventDefault();
+
+    const usuarioInput = document
+        .getElementById("login-usuario")
+        .value
+        .trim()
+        .toLowerCase();
+
+    const senhaInput = document
+        .getElementById("login-senha")
+        .value;
+
+    const erroDiv = document.getElementById("login-erro");
+
+    const loginValido =
+        (
+            usuarioInput === "adriano" ||
+            usuarioInput === "camila" ||
+            usuarioInput === "admin"
+        )
+        &&
+        senhaInput === "acnut2026";
+
+    if (loginValido) {
+
+        document.getElementById("login-container").style.display = "none";
+
+        document.getElementById("main-app").style.display = "flex";
+
+        erroDiv.style.display = "none";
+
+        navegar("dashboard");
+
+    } else {
+
+        erroDiv.style.display = "flex";
+
+    }
+}
+    </script>
+    <script>
+  function fazerLogout() {
+    // Mostra novamente o ecrã de login
+    document.getElementById("login-container").style.display = "flex";
+    // Esconde o painel principal do sistema
+    document.getElementById("main-app").style.display = "none";
+    // Limpa os campos de utilizador e senha
+    document.getElementById("login-usuario").value = "";
+    document.getElementById("login-senha").value = "";
+    // Esconde a mensagem de erro caso estivesse visível
+    const erroDiv = document.getElementById("login-erro");
+    if (erroDiv) {
+        erroDiv.style.display = "none";
+    }
+}
+</script>
+    <!-- Importa o app.js apenas no fim, com defer ou logo antes de fechar -->
+    <script src="app.js"></script>
+</body>
+</html>
