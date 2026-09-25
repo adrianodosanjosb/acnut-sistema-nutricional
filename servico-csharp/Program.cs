@@ -53,23 +53,7 @@ app.MapGet("/api/pacientes", async () =>
 });
 
 // 2. CADASTRAR PACIENTE
-app.MapPost("/api/pacientes", async (PacienteInput input) =>
-{
-    using var conn = new NpgsqlConnection(connString);
-    await conn.OpenAsync();
-    using var cmd = new NpgsqlCommand(@"
-        INSERT INTO pacientes (nome, email, telefone, data_nascimento, sexo)
-        VALUES (@nome, @email, @telefone, @data_nascimento::date, @sexo) RETURNING id;", conn);
-    
-    cmd.Parameters.AddWithValue("nome", input.Nome);
-    cmd.Parameters.AddWithValue("email", input.Email);
-    cmd.Parameters.AddWithValue("telefone", input.Telefone ?? "");
-    cmd.Parameters.AddWithValue("data_nascimento", input.DataNascimento);
-    cmd.Parameters.AddWithValue("sexo", input.Sexo);
 
-    var newId = await cmd.ExecuteScalarAsync();
-    return Results.Created($"/api/pacientes/{newId}", new { id = newId, mensagem = "Paciente cadastrado com sucesso!" });
-});
 
 // 3. AVALIAÇÃO FÍSICA + INTEGRAÇÃO COM MICROSERVIÇO PYTHON
 app.MapPost("/api/avaliacoes", async (AvaliacaoInput input, IHttpClientFactory clientFactory) =>

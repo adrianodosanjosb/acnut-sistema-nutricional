@@ -1025,23 +1025,18 @@ body {
                      tracking-wide text-emerald-400">
             ACNUT
         </span>
-
     </div>
-
-
     <!-- USUÁRIO -->
     <div class="w-10 h-10 rounded-xl
                 bg-gradient-to-br from-emerald-500 to-cyan-500
                 text-white
                 flex items-center justify-center
                 font-bold shadow-lg">
-
         A
-
     </div>
-
 </header>
 <!-- =========================================================OVERLAY MOBILE========================================================= -->
+<div id="main-app" class="flex w-full" style="display: none;">
 <div id="acnut-menu-overlay"
      onclick="fecharMenuMobile()"
      class="hidden fixed inset-0 z-40
@@ -5649,7 +5644,7 @@ body {
                                                             </div>
                                                               </div>
                                                                 </div>
-</main>
+
     <script>
   function fazerLogin(event) {
 
@@ -5711,5 +5706,7 @@ body {
 </script>
     <!-- Importa o app.js apenas no fim, com defer ou logo antes de fechar -->
     <script src="app.js"></script>
+    </main>
+    </div>
 </body>
 </html>

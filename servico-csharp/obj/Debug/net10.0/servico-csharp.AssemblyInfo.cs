@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("servico-csharp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b8fa6bceb5ab8d79d0b390b17b28f66bbae33260")]
 [assembly: System.Reflection.AssemblyProductAttribute("servico-csharp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("servico-csharp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -34,10 +34,8 @@ let pacienteEmEdicaoId = null; // Se for null, está a criar. Se tiver um númer
         } else {
         console.warn("Elemento com ID 'total-pacientes' não foi encontrado no HTML!");
         }
-
         const tabela = document.getElementById("tabela-pacientes");
-if (!tabela) return;
-
+        if (!tabela) return;      
 tabela.innerHTML = "";
 pacientes.forEach(p => {
   tabela.innerHTML += `
@@ -97,7 +95,6 @@ pacientes.forEach(p => {
         let url = `${API_URL}/pacientes`;
         let metodo = 'POST';
 
-        // Se a variável tiver um ID, mudamos para o modo de edição (PUT)
         if (pacienteEmEdicaoId !== null) {
         url = `${API_URL}/pacientes/${pacienteEmEdicaoId}`;
         metodo = 'PUT';
@@ -109,15 +106,11 @@ pacientes.forEach(p => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dadosPaciente)
         });
-
         if (response.ok) {
         alert(pacienteEmEdicaoId !== null ? "Paciente atualizado com sucesso!" : "Paciente cadastrado com sucesso!");
-            
-        // Limpa o formulário e reseta o estado de edição
         document.getElementById('form-paciente').reset();
         pacienteEmEdicaoId = null;
 
-        // Restaura o visual padrão do botão
         const btnSubmit = document.querySelector('#form-paciente button[type="submit"]') || document.querySelector('#form-paciente button');
         if (btnSubmit) {
         btnSubmit.textContent = "Cadastrar Paciente";
@@ -125,10 +118,11 @@ pacientes.forEach(p => {
         btnSubmit.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
         }
 
-        // Recarrega a tabela de pacientes
         carregarPacientes();
         } else {
-        alert("Erro ao guardar os dados do paciente.");
+        const erroTexto = await response.text();
+        console.error("Detalhe do erro do servidor:", erroTexto);
+        alert("Erro ao guardar os dados do paciente: " + erroTexto);
         }
         } catch (error) {
         console.error("Erro na requisição:", error);
@@ -138,8 +132,8 @@ pacientes.forEach(p => {
 
 // 5. AVALIAÇÃO FÍSICA E CÁLCULOS
         async function gerarAvaliacao(e) {
-        e.preventDefault();
-        const body = {
+    e.preventDefault();
+    const body = {
         pacienteId: parseInt(document.getElementById("a-paciente-id").value),
         idade: parseInt(document.getElementById("a-idade").value),
         sexo: document.getElementById("a-sexo").value,
@@ -149,27 +143,36 @@ pacientes.forEach(p => {
         objetivo: document.getElementById("a-objetivo").value,
         percentualGordura: parseFloat(document.getElementById("a-gordura").value || 0),
         massaMagraKg: parseFloat(document.getElementById("a-massa").value || 0)
-        };
+    };
 
+    try {
         const res = await fetch(`${API_URL}/avaliacoes`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
         });
 
         if (res.ok) {
-        const data = await res.json();
-        const calc = data.calculos_python;
-    
-        document.getElementById("resultado-avaliacao").classList.remove("hidden");
-        document.getElementById("cards-resultado").innerHTML = `
-        <div class="bg-slate-900 p-3 rounded border border-slate-700"><span class="text-xs text-slate-400">TMB</span><p class="text-xl font-bold text-emerald-400">${calc.tmb_kcal} kcal</p></div>
-        <div class="bg-slate-900 p-3 rounded border border-slate-700"><span class="text-xs text-slate-400">GET</span><p class="text-xl font-bold text-emerald-400">${calc.get_kcal} kcal</p></div>
-        <div class="bg-slate-900 p-3 rounded border border-slate-700"><span class="text-xs text-slate-400">Meta Calórica</span><p class="text-xl font-bold text-emerald-400">${calc.meta_calorias} kcal</p></div>
-        <div class="bg-slate-900 p-3 rounded border border-slate-700"><span class="text-xs text-slate-400">Proteínas / Carb / Gord</span><p class="text-sm font-semibold text-emerald-400">${calc.macronutrientes.proteinas_g}g / ${calc.macronutrientes.carboidratos_g}g / ${calc.macronutrientes.gorduras_g}g</p></div>
-        `;
+            const data = await res.json();
+            const calc = data.calculos_python;
+
+            document.getElementById("resultado-avaliacao").classList.remove("hidden");
+            document.getElementById("cards-resultado").innerHTML = `
+            <div class="bg-slate-900 p-3 rounded border border-slate-700"><span class="text-xs text-slate-400">TMB</span><p class="text-xl font-bold text-emerald-400">${calc.tmb_kcal} kcal</p></div>
+            <div class="bg-slate-900 p-3 rounded border border-slate-700"><span class="text-xs text-slate-400">GET</span><p class="text-xl font-bold text-emerald-400">${calc.get_kcal} kcal</p></div>
+            <div class="bg-slate-900 p-3 rounded border border-slate-700"><span class="text-xs text-slate-400">Meta Calórica</span><p class="text-xl font-bold text-emerald-400">${calc.meta_calorias} kcal</p></div>
+            <div class="bg-slate-900 p-3 rounded border border-slate-700"><span class="text-xs text-slate-400">Proteínas / Carb / Gord</span><p class="text-sm font-semibold text-emerald-400">${calc.macronutrientes.proteinas_g}g / ${calc.macronutrientes.carboidratos_g}g / ${calc.macronutrientes.gorduras_g}g</p></div>
+            `;
+        } else {
+            const erroTexto = await res.text();
+            console.error("Detalhe do erro do servidor:", erroTexto);
+            alert("Erro ao processar avaliação: " + erroTexto);
         }
-        }
+    } catch (error) {
+        console.error("Erro na requisição:", error);
+        alert("Erro de conexão com o servidor.");
+    }
+}
 
 // 6. REGISTAR CHECK-IN
         async function salvarCheckin(e) {
@@ -191,7 +194,30 @@ pacientes.forEach(p => {
         alert("Check-in semanal registrado!");
         }
         }
+// 5.1 CÁLCULO AUTOMÁTICO DA MASSA MAGRA A PARTIR DA GORDURA CORPORAL
+                function calcularMassaMagraAutomatica() {
+                const pesoInput = document.getElementById("a-peso");
+                const gorduraInput = document.getElementById("a-gordura");
+                const massaInput = document.getElementById("a-massa");
 
+                if (!pesoInput || !gorduraInput || !massaInput) return;
+
+                const peso = parseFloat(pesoInput.value) || 0;
+                const percentualGordura = parseFloat(gorduraInput.value) || 0;
+
+                if (peso > 0 && percentualGordura > 0) {
+                const massaMagra = peso * (1 - percentualGordura / 100);
+                massaInput.value = massaMagra.toFixed(1);
+                }
+                }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const pesoInput = document.getElementById("a-peso");
+    const gorduraInput = document.getElementById("a-gordura");
+
+    if (pesoInput) pesoInput.addEventListener("input", calcularMassaMagraAutomatica);
+    if (gorduraInput) gorduraInput.addEventListener("input", calcularMassaMagraAutomatica);
+});
 // 7. ANAMNESE (GUARDAR E CARREGAR)
         async function salvarAnamnese(e) {
         if (e) e.preventDefault();
@@ -253,8 +279,7 @@ pacientes.forEach(p => {
         } catch (err) {
         console.error("Erro ao carregar alimentos:", err);
         }
-        }
-
+}
 // 10. VISUALIZAR PLANO ALIMENTAR COMPLETO
         async function carregarPlanoAlimentar() {
         const pacienteId = document.getElementById("pl-paciente-id").value;

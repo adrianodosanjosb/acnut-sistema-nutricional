@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from typing import Optional
 
 app = FastAPI(
-    title="Camila Sidônio - Calculadora Clínica Nutricional",
+    title="Acnut - Calculadora Clínica Nutricional",
     version="1.0.0"
 )
 
@@ -80,3 +80,6 @@ def calcular_plano(dados: DadosAvaliacao):
             "gorduras_g": gorduras_g
         }
     }
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=5000)
